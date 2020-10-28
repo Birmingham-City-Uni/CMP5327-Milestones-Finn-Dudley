@@ -1,0 +1,7 @@
+﻿  Gameloop.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Gameloop.cpp(19,2): warning C4150: deletion of pointer to incomplete type 'Player'; no destructor called
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Gameloop.h(6): message : see declaration of 'Player'
+  main.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+  RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Debug\RunAndGun-Application.exe
