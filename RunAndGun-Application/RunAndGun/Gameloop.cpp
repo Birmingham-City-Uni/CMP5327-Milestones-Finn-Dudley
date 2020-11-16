@@ -5,10 +5,8 @@
 Gameloop::Gameloop() {
 
 	window = nullptr;
-	surface = nullptr;
+	renderer = nullptr;
 	player = nullptr;
-
-	quitting = false;
 }
 
 /// <summary>
@@ -17,9 +15,10 @@ Gameloop::Gameloop() {
 Gameloop::~Gameloop() {
 	
 	RELEASEPOINTER(player);
-	RELEASEPOINTER(surface);
 
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow( window );
+	window = nullptr;
 }
 
 /// <summary>
@@ -28,19 +27,36 @@ Gameloop::~Gameloop() {
 bool Gameloop::Init() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL could not Initialize: %s\n", SDL_GetError() );
+		std::cerr << "SDL Could not Initialize: " << SDL_GetError() << std::endl;
 	}
 	else {
 		// Create SDL Window
 		window = SDL_CreateWindow("Run and Gun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
-			if (window == NULL) {
-				printf("Falied to Open window: %s\n", SDL_GetError() );
-				return false;
-			}
+		if (window == NULL) {
+			std::cerr << "Failed to Open Window: " << SDL_GetError() << std::endl;
+			return false;
+		}
 	}
-	
-	surface = SDL_GetWindowSurface( window );
 
+	if (IMG_Init(IMG_INIT_PNG) < 0) {
+		std::cerr << "SDL_Image Could Not Initialize: " << SDL_GetError() << std::endl;
+	}
+
+	// Add Renderer
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == NULL) {
+		std::cerr << "Failed to Create Renderer: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	// Setting all possible key press input to false
+	for (int i = 0; i < 512; i++)
+	{
+		keyDown[i] = false;
+	}
+
+	player = new Player(this->renderer);
+	player->init();
 
 	return true;
 }
@@ -55,7 +71,17 @@ bool Gameloop::ProcessInput() {
 	while ( SDL_PollEvent(&e) != 0 ) {
 		switch (e.type){
 		case SDL_QUIT:
-			quitting = true;
+			return false;
+			break;
+		case SDL_KEYDOWN:
+			if (e.key.keysym.scancode < 512) {
+				keyDown[e.key.keysym.scancode] = true;
+			}
+			break;
+		case SDL_KEYUP:
+			if (e.key.keysym.scancode < 512) {
+				keyDown[e.key.keysym.scancode] = false;
+			}
 			break;
 		default:
 			break;
@@ -63,38 +89,41 @@ bool Gameloop::ProcessInput() {
 
 	}
 
+	player->processInput(keyDown);
+
 	return true;
-}
-
-/// <summary>
-/// Function to Load any sprite assets
-/// </summary>
-void Gameloop::LoadAssests() {
-
 }
 
 /// <summary>
 /// Function to Unload the Sprite assets allocated to memory
 /// </summary>
-void Gameloop::UnloadAssets() {
+bool Gameloop::UnloadAssets() {
 
+	return true;
 }
 
 /// <summary>
 /// Function to Update the game enviroment
 /// </summary>
 void Gameloop::Update() {
-	// Update the Scene Depending on User Input
-	Gameloop::ProcessInput();
+	player->update();
 }
 
 /// <summary>
 /// Function to draw the Game Enviroment to the window's surface.
 /// </summary>
 void Gameloop::Draw() {
+	SDL_SetRenderDrawColor(this->renderer, 200, 200, 200, 255);
+	SDL_RenderClear(renderer);
+
 	// Background Draw Level
 
+
 	// Player Draw Level
+	player->draw();
 
 	// UI Draw Level
+
+	SDL_RenderPresent(renderer);
+	SDL_Delay(16);
 }

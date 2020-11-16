@@ -1,4 +1,5 @@
 #include <iostream>
+#include <future>
 
 #include "Gameloop.h";
 
@@ -13,18 +14,18 @@ int main( int argc, char* args[])
 		return 1;
 	}
 	
-	gameloop->LoadAssests();
-
-	while (!gameloop->quitting){
+	while (gameloop->ProcessInput()){
 		gameloop->Update();
 		gameloop->Draw();
-
-		SDL_Delay(16); // Cap FPS to 60
 	}
 	
-	gameloop->UnloadAssets();
+	if (!gameloop->UnloadAssets()) {
+		return 1;
+	}
 
 	delete gameloop;
+
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;

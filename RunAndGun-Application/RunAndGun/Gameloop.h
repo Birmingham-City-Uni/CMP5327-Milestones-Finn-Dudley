@@ -3,26 +3,19 @@
 #include <iostream>
 #include <SDL.h>
 
-class Player;
+#include "GameCharacters.h"
 
 class Gameloop {
 
 public:
-	bool quitting;
+
 private:
 	SDL_Window* window;
-	SDL_Surface* surface;
+	SDL_Renderer* renderer;
 
 	Player* player;
 
-	enum KeyStates {
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-		KEYSTATES_COUNT
-	};
-
+	bool keyDown[512];
 public:
 
 	Gameloop();
@@ -36,9 +29,7 @@ public:
 
 	void Draw();
 
-	void LoadAssests();
-
-	void UnloadAssets();
+	bool UnloadAssets();
 
 };
 

@@ -21,9 +21,15 @@
     <ClCompile Include="Gameloop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameCharacters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gameloop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCharacters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

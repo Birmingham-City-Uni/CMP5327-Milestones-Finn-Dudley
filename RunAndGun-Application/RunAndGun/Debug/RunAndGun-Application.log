@@ -1,7 +1,8 @@
-﻿  Gameloop.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Gameloop.cpp(19,2): warning C4150: deletion of pointer to incomplete type 'Player'; no destructor called
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Gameloop.h(6): message : see declaration of 'Player'
+﻿  GameCharacters.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameCharacters.cpp(29,2): warning C4150: deletion of pointer to incomplete type 'SDL_Renderer'; no destructor called
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\SDL2-2.0.12\include\SDL_render.h(132): message : see declaration of 'SDL_Renderer'
+  Gameloop.cpp
   main.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Generating Code...
-  RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Debug\RunAndGun-Application.exe
+  RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\Debug\RunAndGun-Application.exe
