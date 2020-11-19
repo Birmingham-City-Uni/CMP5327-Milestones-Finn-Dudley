@@ -3,7 +3,9 @@
 #include <iostream>
 #include <SDL.h>
 
-#include "GameCharacters.h"
+#include "Tilemap.h"
+#include "Player.h"
+#include "Mouse.cpp"
 
 class Gameloop {
 
@@ -13,7 +15,9 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
+	Tilemap* tilemap;
 	Player* player;
+	Mouse* mouse;
 
 	bool keyDown[512];
 public:

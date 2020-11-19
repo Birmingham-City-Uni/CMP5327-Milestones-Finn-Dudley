@@ -21,7 +21,13 @@
     <ClCompile Include="Gameloop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameCharacters.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +35,10 @@
     <ClInclude Include="Gameloop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameCharacters.h">
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

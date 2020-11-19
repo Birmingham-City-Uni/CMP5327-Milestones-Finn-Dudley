@@ -145,13 +145,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameCharacters.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameCharacters.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Gameloop.h" />
+    <ClInclude Include="Tilemap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

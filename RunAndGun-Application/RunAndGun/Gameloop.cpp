@@ -3,10 +3,12 @@
 #define RELEASEPOINTER(x) { if(x){ delete x; x = nullptr;} }
 
 Gameloop::Gameloop() {
-
 	window = nullptr;
 	renderer = nullptr;
+
+	tilemap = nullptr;
 	player = nullptr;
+	mouse = nullptr;
 }
 
 /// <summary>
@@ -15,6 +17,8 @@ Gameloop::Gameloop() {
 Gameloop::~Gameloop() {
 	
 	RELEASEPOINTER(player);
+	RELEASEPOINTER(tilemap);
+	RELEASEPOINTER(mouse);
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow( window );
@@ -38,10 +42,6 @@ bool Gameloop::Init() {
 		}
 	}
 
-	if (IMG_Init(IMG_INIT_PNG) < 0) {
-		std::cerr << "SDL_Image Could Not Initialize: " << SDL_GetError() << std::endl;
-	}
-
 	// Add Renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL) {
@@ -55,8 +55,25 @@ bool Gameloop::Init() {
 		keyDown[i] = false;
 	}
 
+	tilemap = new Tilemap(this->renderer);
+	if (!tilemap->init()) {
+		std::cerr << "Failed to Initialize Tilemap: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
 	player = new Player(this->renderer);
-	player->init();
+	if (!player->init()) {
+		std::cerr << "Failed to Initialize Player" << SDL_GetError() << std::endl;
+		return false;
+	}
+	
+	mouse = new Mouse(this->renderer);
+	if (!mouse->init()) {
+		std::cerr << "Failed to Initialize Mouse" << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	SDL_ShowCursor(0);
 
 	return true;
 }
@@ -90,7 +107,8 @@ bool Gameloop::ProcessInput() {
 	}
 
 	player->processInput(keyDown);
-
+	mouse->processInput();
+	
 	return true;
 }
 
@@ -98,6 +116,10 @@ bool Gameloop::ProcessInput() {
 /// Function to Unload the Sprite assets allocated to memory
 /// </summary>
 bool Gameloop::UnloadAssets() {
+
+	tilemap->clean();
+	player->clean();
+	mouse->clean();
 
 	return true;
 }
@@ -107,6 +129,7 @@ bool Gameloop::UnloadAssets() {
 /// </summary>
 void Gameloop::Update() {
 	player->update();
+	mouse->update();
 }
 
 /// <summary>
@@ -116,13 +139,11 @@ void Gameloop::Draw() {
 	SDL_SetRenderDrawColor(this->renderer, 200, 200, 200, 255);
 	SDL_RenderClear(renderer);
 
-	// Background Draw Level
+	tilemap->draw();
 
-
-	// Player Draw Level
 	player->draw();
 
-	// UI Draw Level
+	mouse->draw();
 
 	SDL_RenderPresent(renderer);
 	SDL_Delay(16);
