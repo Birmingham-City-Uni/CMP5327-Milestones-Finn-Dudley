@@ -4,8 +4,9 @@
 #include <SDL.h>
 
 #include "Tilemap.h"
-#include "Player.h"
 #include "Mouse.cpp"
+#include "GameObjects.h"
+#include "BulletManager.h"
 
 class Gameloop {
 
@@ -16,8 +17,9 @@ private:
 	SDL_Renderer* renderer;
 
 	Tilemap* tilemap;
-	Player* player;
 	Mouse* mouse;
+	Player* player;
+	BulletManager* bulletManager;
 
 	bool keyDown[512];
 public:

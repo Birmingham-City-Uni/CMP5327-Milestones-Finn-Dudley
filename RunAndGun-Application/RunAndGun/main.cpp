@@ -27,6 +27,5 @@ int main( int argc, char* args[])
 
 	IMG_Quit();
 	SDL_Quit();
-
 	return 0;
 }

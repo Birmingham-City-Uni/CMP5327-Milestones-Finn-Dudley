@@ -145,14 +145,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="GameObjects.cpp" />
     <ClCompile Include="Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="BulletManager.h" />
+    <ClInclude Include="GameObjects.h" />
     <ClInclude Include="Gameloop.h" />
     <ClInclude Include="Tilemap.h" />
   </ItemGroup>

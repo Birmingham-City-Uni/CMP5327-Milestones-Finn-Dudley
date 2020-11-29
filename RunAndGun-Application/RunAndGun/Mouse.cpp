@@ -8,33 +8,37 @@ private:
 	int mouseX;
 	int mouseY;
 
-	SDL_Rect rect;
+	SDL_Rect position;
 
-	SDL_Renderer* renderer;
 	SDL_Texture* crosshairTexture;
 public:
-	Mouse(SDL_Renderer* renderer) {
+	Mouse(SDL_Renderer* _renderer) {
 		this->mouseX = -10;
 		this->mouseY = -10;
 
-		this->rect = { mouseX, mouseY, 64,64 };
-		this->renderer = renderer;
+		this->position = { mouseX, mouseY, 64,64 };
 	}
 
 	~Mouse(){
-		if (renderer) {
-			delete renderer;
-			renderer = nullptr;
-		}
+
 	}
 
-	bool init() {
+	int getX() {
+		return mouseX;
+	}
+	int getY() {
+		return mouseY;
+	}
+
+	bool init(SDL_Renderer* _renderer) {
 		SDL_Surface* tmpCrosshairSurface = IMG_Load("assets/crosshair.png");
-		crosshairTexture = SDL_CreateTextureFromSurface(this->renderer, tmpCrosshairSurface);
+		crosshairTexture = SDL_CreateTextureFromSurface(_renderer, tmpCrosshairSurface);
 		SDL_FreeSurface(tmpCrosshairSurface);
 		if (crosshairTexture == NULL) {
 			return false;
 		}
+
+		SDL_ShowCursor(0);
 
 		return true;
 	}
@@ -44,15 +48,15 @@ public:
 	}
 
 	void update() {
-		rect.x = mouseX;
-		rect.y = mouseY;
+		position.x = mouseX;
+		position.y = mouseY;
 
-		rect.x -= rect.w / 2;
-		rect.y -= rect.h / 2;
+		position.x -= position.w / 2;
+		position.y -= position.h / 2;
 	}
 
-	void draw() {
-		SDL_RenderCopy(this->renderer, this->crosshairTexture, 0, &rect);
+	void draw(SDL_Renderer* _renderer) {
+		SDL_RenderCopy(_renderer, this->crosshairTexture, 0, &position);
 	}
 
 	void clean() {

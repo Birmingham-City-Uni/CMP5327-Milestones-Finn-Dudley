@@ -1,9 +1,13 @@
-﻿  Gameloop.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Mouse.cpp(26,1): warning C4150: deletion of pointer to incomplete type 'SDL_Renderer'; no destructor called
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\SDL2-2.0.12\include\SDL_render.h(132): message : see declaration of 'SDL_Renderer'
+﻿  BulletManager.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(27,33): warning C4018: '>': signed/unsigned mismatch
+  Mouse.cpp
+  GameObjects.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(78,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(111,76): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(112,76): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+  Gameloop.cpp
   main.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\Mouse.cpp(26,1): warning C4150: deletion of pointer to incomplete type 'SDL_Renderer'; no destructor called
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\SDL2-2.0.12\include\SDL_render.h(132): message : see declaration of 'SDL_Renderer'
+  TileMap.cpp
   Generating Code...
   RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\Debug\RunAndGun-Application.exe
