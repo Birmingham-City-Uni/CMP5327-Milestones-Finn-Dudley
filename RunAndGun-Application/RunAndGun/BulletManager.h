@@ -27,7 +27,7 @@ public:
 	BulletManager();
 	~BulletManager();
 
-	bool init(SDL_Renderer* _renderer);
+	bool init(SDL_Renderer* _renderer, SDL_Texture* _texture);
 	void fireBullet(int _x, int _y, int _rotationAngle);
 	void update();
 	void draw(SDL_Renderer* _renderer);
@@ -35,4 +35,7 @@ public:
 	void clean();
 private:
 
+	void pistolFire();
+	void shotgunFire();
+	void rifleFire();
 };

@@ -6,33 +6,32 @@
 #pragma region GameObject Definitions
 
 void GameObject::draw(SDL_Renderer* _renderer) {
-	if (visable) SDL_RenderCopyEx(_renderer, this->texture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+	if (visable) SDL_RenderCopyEx(_renderer, this->gameObjectTexture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
 }
 
 void GameObject::clean() {
-	SDL_DestroyTexture(this->texture);
+	SDL_DestroyTexture(this->gameObjectTexture);
 }
 
-bool GameObject::setTexture(SDL_Renderer* _renderer, std::string _filename) {
+SDL_Texture* GameObject::getTexture(SDL_Renderer* _renderer, std::string _filename) {
 	SDL_Surface* tmpSurface = IMG_Load(_filename.c_str());
-	this->texture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+	SDL_Texture* texture_ = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
-	if (this->texture == NULL) {
-		return false;
-	}
 
-	return true;
+	return texture_;
 }
 #pragma endregion
 
 #pragma region Player Definitions
 
 Player::Player(Mouse* _mouse) : mouse(_mouse){
-	this->texture = nullptr;
+	this->gameObjectTexture = nullptr;
+	this->gameObjectTexture2 = nullptr;
+	this->gameObjectTexture3 = nullptr;
 	this->bulletManager = nullptr;
 
 	this->position = { 1280 / 2, 720 / 2, 50, 75 };
-	this->rotationPoint = { (int)(position.w / 2), (int)(position.h * 0.70)};
+	this->rotationPoint = { (int)(position.w / 2), (int)(position.h * 0.75)};
 	this->visable = true;
 
 	this->movementSpeed = 3;
@@ -50,12 +49,15 @@ Player::~Player() {
 
 bool Player::init(SDL_Renderer* _renderer) {
 
-	if (!setTexture(_renderer, "assets/player/player-rifle.png")) {
+	this->gameObjectTexture = getTexture(_renderer, "assets/player/player-pistol.png");
+	this->gameObjectTexture2 = getTexture(_renderer, "assets/player/player-rifle.png");
+	this->gameObjectTexture3 = getTexture(_renderer, "assets/player/player-shotgun.png");
+	if(this->gameObjectTexture == NULL || this->gameObjectTexture2 == NULL || this->gameObjectTexture3 == NULL){
 		return false;
 	}
 
 	bulletManager = new BulletManager();
-	if (!bulletManager->init(_renderer)) {
+	if (!bulletManager->init(_renderer, getTexture(_renderer, "assets/pellet.png"))) {
 		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
 		return false;
 	}
@@ -63,8 +65,9 @@ bool Player::init(SDL_Renderer* _renderer) {
 	return true;
 }
 
-void Player::processInput(bool *keyDown) {
+void Player::processInput(bool *keyDown, bool *buttonDown) {
 
+	//Player Movement
 	if (keyDown[SDL_SCANCODE_W] || keyDown[SDL_SCANCODE_UP]) {
 		position.y -= movementSpeed;
 	}
@@ -81,10 +84,21 @@ void Player::processInput(bool *keyDown) {
 		position.x += movementSpeed;
 	}
 
-	if (keyDown[SDL_SCANCODE_SPACE]) {
+	// Player Shooting
+	if (keyDown[SDL_SCANCODE_SPACE] || buttonDown[SDL_BUTTON_LEFT]) {
 		bulletManager->fireBullet( (position.x + rotationPoint.x), (position.y + rotationPoint.y), rotationAngle);
 	}
 
+	// Player Gun Selection
+	if (keyDown[SDL_SCANCODE_1]) {
+		selectedWeapon = 1;
+	}
+	if (keyDown[SDL_SCANCODE_2]) {
+		selectedWeapon = 2;
+	}
+	if (keyDown[SDL_SCANCODE_3]) {
+		selectedWeapon = 3;
+	}
 }
 
 void Player::update(){
@@ -96,7 +110,17 @@ void Player::update(){
 void Player::draw(SDL_Renderer* _renderer) {
 	if (visable) {
 		bulletManager->draw(_renderer);
-		SDL_RenderCopyEx(_renderer, this->texture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+		switch (selectedWeapon) {
+		case 1: default:
+			SDL_RenderCopyEx(_renderer, this->gameObjectTexture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+			break;
+		case 2:
+			SDL_RenderCopyEx(_renderer, this->gameObjectTexture2, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+			break;
+		case 3:
+			SDL_RenderCopyEx(_renderer, this->gameObjectTexture3, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+			break;
+		}
 	}
 }
 #pragma endregion

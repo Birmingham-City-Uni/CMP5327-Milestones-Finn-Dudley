@@ -1,18 +1,16 @@
 #include "BulletManager.h"
 
 BulletManager::BulletManager(){
-
+	this->texture = nullptr;
 }
 
 BulletManager::~BulletManager() {
 
 }
 
-bool BulletManager::init(SDL_Renderer* _renderer) {
+bool BulletManager::init(SDL_Renderer* _renderer, SDL_Texture* _texture){
 
-	SDL_Surface* tmpSurface = IMG_Load("assets/bullet.png");
-	this->texture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+	this->texture = _texture;
 	if (this->texture == NULL) {
 		return false;
 	}
@@ -37,14 +35,14 @@ void BulletManager::update() {
 	}
 
 	auto remove = std::remove_if(bullets.begin(), bullets.end(),
-		[](const Bullet& bullet) { return bullet.distance > 500; });
+		[](const Bullet& bullet) { return bullet.distance > 600; });
 	bullets.erase(remove, bullets.end());
 }
 
 void BulletManager::draw(SDL_Renderer* _renderer) {
 	SDL_Point center = { 0,0 };
 	for (auto& bullet : bullets) {
-		SDL_Rect pos = { bullet.x + 10, bullet.y, 10, 10 };
+		SDL_Rect pos = { bullet.x + 10, bullet.y, 6, 6 };
 		SDL_RenderCopyEx(_renderer, this->texture, 0, &pos, bullet.rotation, &center, SDL_FLIP_NONE);
 	}
 }

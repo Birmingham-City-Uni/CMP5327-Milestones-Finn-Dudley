@@ -23,7 +23,7 @@ protected:
 	SDL_Rect position;
 	SDL_Point rotationPoint;
 
-	SDL_Texture* texture;
+	SDL_Texture* gameObjectTexture;
 
 public:
 	/// <summary>
@@ -104,7 +104,7 @@ protected:
 	/// </summary>
 	/// <param name="_filename">- The File directory of the Texture</param>
 	/// <returns></returns>
-	bool setTexture(SDL_Renderer* _renderer, std::string _filename);
+	SDL_Texture* getTexture(SDL_Renderer* _renderer, std::string _filename);
 };
 #pragma endregion
 
@@ -113,7 +113,12 @@ protected:
 class Player : public GameObject{
 private:
 	int rotationSpeed;
-	
+
+	int selectedWeapon = 1;
+
+	SDL_Texture* gameObjectTexture2;
+	SDL_Texture* gameObjectTexture3;
+
 	Mouse* mouse;
 	BulletManager* bulletManager;
 public:
@@ -121,14 +126,28 @@ public:
 	~Player();
 
 	bool init(SDL_Renderer* _renderer) final override;
-	void processInput(bool * keyDown);
+	void processInput(bool * keyDown, bool* buttonDown);
 
 	void update() final override;
 	void draw(SDL_Renderer* _renderer) final override;
+private:
+
 };
 #pragma endregion
 
 #pragma region Zombie Class
 
+class Zombie : public GameObject {
+public:
 
+private:
+
+public:
+
+	bool init(SDL_Renderer* _renderer) final override;
+
+	void update() final override;
+private:
+
+};
 #pragma endregion

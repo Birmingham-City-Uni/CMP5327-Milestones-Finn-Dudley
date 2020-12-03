@@ -20,6 +20,7 @@ private:
 	Player* player;
 
 	bool keyDown[512];
+	bool buttonDown[3];
 public:
 
 	Gameloop();

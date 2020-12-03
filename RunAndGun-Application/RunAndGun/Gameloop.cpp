@@ -48,10 +48,12 @@ bool Gameloop::Init() {
 		return false;
 	}
 
-	// Setting all possible key press input to false
-	for (int i = 0; i < 512; i++)
-	{
+	// Setting all possible key/button press input to false
+	for (int i = 0; i < 512; i++){
 		keyDown[i] = false;
+	}
+	for (int i = 0; i < 3; i++) {
+		buttonDown[i] = false;
 	}
 
 	tilemap = new Tilemap();
@@ -98,8 +100,14 @@ bool Gameloop::ProcessInput() {
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
+			if (e.button.button < 3) {
+				buttonDown[e.button.button] = true;
+			}
 			break;
 		case SDL_MOUSEBUTTONUP:
+			if (e.button.button < 3) {
+				buttonDown[e.button.button] = false;
+			}
 			break;
 		default:
 			break;
@@ -107,7 +115,7 @@ bool Gameloop::ProcessInput() {
 
 	}
 
-	player->processInput(keyDown);
+	player->processInput(keyDown, buttonDown);
 	mouse->processInput();
 	
 	return true;
