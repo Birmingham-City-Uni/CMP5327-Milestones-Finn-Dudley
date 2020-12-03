@@ -1,10 +1,12 @@
 ﻿  BulletManager.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(27,33): warning C4018: '>': signed/unsigned mismatch
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(24,16): warning C4018: '<': signed/unsigned mismatch
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(34,65): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(35,65): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
   Mouse.cpp
   GameObjects.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(78,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(111,76): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(112,76): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(4,1): warning C4005: 'PI': macro redefinition
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.h(8): message : see previous definition of 'PI'
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(90,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Gameloop.cpp
   main.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline

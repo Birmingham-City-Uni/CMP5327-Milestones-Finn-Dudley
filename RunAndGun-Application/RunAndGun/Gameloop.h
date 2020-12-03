@@ -6,7 +6,6 @@
 #include "Tilemap.h"
 #include "Mouse.cpp"
 #include "GameObjects.h"
-#include "BulletManager.h"
 
 class Gameloop {
 
@@ -19,7 +18,6 @@ private:
 	Tilemap* tilemap;
 	Mouse* mouse;
 	Player* player;
-	BulletManager* bulletManager;
 
 	bool keyDown[512];
 public:

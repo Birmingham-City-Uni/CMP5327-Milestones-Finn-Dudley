@@ -71,12 +71,6 @@ bool Gameloop::Init() {
 		std::cerr << "Failed to Initialize Player: " << SDL_GetError() << std::endl;
 		return false;
 	}
-
-	bulletManager = new BulletManager(this->player);
-	if (!bulletManager->init(this->renderer)) {
-		std::cerr << "Failed to Initialize BulletManager: " << SDL_GetError() << std::endl;
-		return false;
-	}
 	
 	return true;
 }
@@ -114,7 +108,6 @@ bool Gameloop::ProcessInput() {
 	}
 
 	player->processInput(keyDown);
-	bulletManager->processInput(keyDown);
 	mouse->processInput();
 	
 	return true;
@@ -143,7 +136,6 @@ bool Gameloop::UnloadAssets() {
 /// </summary>
 void Gameloop::Update() {
 	player->update();
-	bulletManager->update();
 	mouse->update();
 }
 
@@ -155,7 +147,6 @@ void Gameloop::Draw() {
 
 	tilemap->draw(this->renderer);
 
-	bulletManager->draw(this->renderer);
 	player->draw(this->renderer);
 
 	mouse->draw(this->renderer);

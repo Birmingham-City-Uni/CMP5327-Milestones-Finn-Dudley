@@ -6,10 +6,11 @@
 #include <SDL_image.h>
 
 #include "Mouse.cpp"
+#include "BulletManager.h"
 
 #pragma region GameObject Class
 
-class GameObject abstract{
+class GameObject abstract {
 public:
 	bool visable;
 
@@ -103,7 +104,7 @@ protected:
 	/// </summary>
 	/// <param name="_filename">- The File directory of the Texture</param>
 	/// <returns></returns>
-	bool setTexture( SDL_Renderer* _renderer, std::string _filename);
+	bool setTexture(SDL_Renderer* _renderer, std::string _filename);
 };
 #pragma endregion
 
@@ -114,6 +115,7 @@ private:
 	int rotationSpeed;
 	
 	Mouse* mouse;
+	BulletManager* bulletManager;
 public:
 	Player(Mouse* mouse);
 	~Player();
@@ -122,25 +124,11 @@ public:
 	void processInput(bool * keyDown);
 
 	void update() final override;
-
+	void draw(SDL_Renderer* _renderer) final override;
 };
 #pragma endregion
 
-#pragma region Bullet Class
+#pragma region Zombie Class
 
-class Bullet : public GameObject {
-public:
-	int distance;
-private:
 
-public:
-	Bullet(int _rotationAngle);
-	~Bullet();
-
-	bool init(SDL_Renderer* _renderer) final override;
-	void update() final override;
-
-private:
-
-};
 #pragma endregion

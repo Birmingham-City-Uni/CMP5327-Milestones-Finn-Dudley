@@ -5,28 +5,34 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "GameObjects.h"
+#define PI 3.14159265
+
+struct Bullet {
+	int x, y, rotation, distance;
+};
 
 class BulletManager {
 public:
 
 private:
+	SDL_Texture* texture;
 	std::vector<Bullet> bullets;
-
-	Player* player;
+	
+	const int movementSpeed = 10;
 
 	const int FireTimer = 200;
 	unsigned int lastFire = 0;
 
 public:
-	BulletManager(Player* _player);
+	BulletManager();
 	~BulletManager();
 
 	bool init(SDL_Renderer* _renderer);
-	void processInput(bool* keyDown);
+	void fireBullet(int _x, int _y, int _rotationAngle);
 	void update();
 	void draw(SDL_Renderer* _renderer);
 
+	void clean();
 private:
 
 };

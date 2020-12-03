@@ -29,6 +29,7 @@ bool GameObject::setTexture(SDL_Renderer* _renderer, std::string _filename) {
 
 Player::Player(Mouse* _mouse) : mouse(_mouse){
 	this->texture = nullptr;
+	this->bulletManager = nullptr;
 
 	this->position = { 1280 / 2, 720 / 2, 50, 75 };
 	this->rotationPoint = { (int)(position.w / 2), (int)(position.h * 0.70)};
@@ -39,12 +40,23 @@ Player::Player(Mouse* _mouse) : mouse(_mouse){
 	this->rotationAngle = 0;
 }
 Player::~Player() {
+	bulletManager->clean();
 
+	if (bulletManager) {
+		delete bulletManager;
+		bulletManager = nullptr;
+	}
 }
 
 bool Player::init(SDL_Renderer* _renderer) {
 
 	if (!setTexture(_renderer, "assets/player/player-rifle.png")) {
+		return false;
+	}
+
+	bulletManager = new BulletManager();
+	if (!bulletManager->init(_renderer)) {
+		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
 		return false;
 	}
 
@@ -70,48 +82,27 @@ void Player::processInput(bool *keyDown) {
 	}
 
 	if (keyDown[SDL_SCANCODE_SPACE]) {
-
+		bulletManager->fireBullet( (position.x + rotationPoint.x), (position.y + rotationPoint.y), rotationAngle);
 	}
+
 }
 
 void Player::update(){
 	rotationAngle = -90 + atan2((position.y + rotationPoint.y) - mouse->getY(), (position.x + rotationPoint.x) - mouse->getX()) * (180 / PI);
+
+	bulletManager->update();
+}
+
+void Player::draw(SDL_Renderer* _renderer) {
+	if (visable) {
+		bulletManager->draw(_renderer);
+		SDL_RenderCopyEx(_renderer, this->texture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
+	}
 }
 #pragma endregion
 
-#pragma region Bullet Definitions
+#pragma region Zombie Definitions
 
-Bullet::Bullet(int _rotationAngle) {
-	this->texture = nullptr;
 
-	this->movementSpeed = 7;
-	this->rotationAngle = _rotationAngle;
-	this->distance = 0;
-
-	position = { 0, 0, 10, 25 };
-	this->rotationPoint = {position.w /2, position.h/2};
-
-	this->visable = false;
-}
-
-Bullet::~Bullet() {
-
-}
-
-bool Bullet::init(SDL_Renderer* _renderer) {
-	
-	if (!setTexture(_renderer, "assets/bullet.png")) {
-		return false;
-	}
-
-	return true;
-}
-
-void Bullet::update() {
-	position.x += sin(this->rotationAngle * PI / 180.0f) * this->movementSpeed;
-	position.y -= cos(this->rotationAngle * PI / 180.0f) * this->movementSpeed;
-
-	distance += movementSpeed;
-}
 #pragma endregion
 

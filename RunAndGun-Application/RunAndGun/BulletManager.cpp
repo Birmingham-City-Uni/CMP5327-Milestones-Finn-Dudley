@@ -1,48 +1,54 @@
 #include "BulletManager.h"
 
-BulletManager::BulletManager(Player* _player) : player(_player) {
+BulletManager::BulletManager(){
 
 }
 
 BulletManager::~BulletManager() {
-	if (player) {
-		delete player;
-		player = nullptr;
-	}
+
 }
 
 bool BulletManager::init(SDL_Renderer* _renderer) {
 
-	for (auto& bullet : bullets) {
-		if (!bullet.init(_renderer)) {
-			return false;
-		}
+	SDL_Surface* tmpSurface = IMG_Load("assets/bullet.png");
+	this->texture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+	SDL_FreeSurface(tmpSurface);
+	if (this->texture == NULL) {
+		return false;
 	}
 
 	return true;
 }
 
-void BulletManager::processInput(bool* keyDown) {
-	if (keyDown[SDL_SCANCODE_SPACE]) {
-		if (SDL_GetTicks() - lastFire > FireTimer) {
-			bullets.push_back(Bullet(player->getAngle()));
-			lastFire = SDL_GetTicks();
-		}
+void BulletManager::fireBullet(int _x, int _y, int _rotationAngle) {
+	if (FireTimer < SDL_GetTicks() - lastFire) {
+			
+		bullets.push_back(Bullet{ _x, _y, _rotationAngle, 0 });
+		lastFire = SDL_GetTicks();
 	}
+
 }
 
 void BulletManager::update() {
 	for (auto& bullet : bullets) {
-		bullet.update();
+		bullet.x += sin(bullet.rotation * PI / 180.0f) * movementSpeed;
+		bullet.y -= cos(bullet.rotation * PI / 180.0f) * movementSpeed;
+		bullet.distance += movementSpeed;
 	}
 
 	auto remove = std::remove_if(bullets.begin(), bullets.end(),
-		[](const Bullet& bullet) { return bullet.distance > 1000; });
+		[](const Bullet& bullet) { return bullet.distance > 500; });
 	bullets.erase(remove, bullets.end());
 }
 
 void BulletManager::draw(SDL_Renderer* _renderer) {
+	SDL_Point center = { 0,0 };
 	for (auto& bullet : bullets) {
-		bullet.draw(_renderer);
+		SDL_Rect pos = { bullet.x + 10, bullet.y, 10, 10 };
+		SDL_RenderCopyEx(_renderer, this->texture, 0, &pos, bullet.rotation, &center, SDL_FLIP_NONE);
 	}
+}
+
+void BulletManager::clean() {
+	SDL_DestroyTexture(this->texture);
 }
