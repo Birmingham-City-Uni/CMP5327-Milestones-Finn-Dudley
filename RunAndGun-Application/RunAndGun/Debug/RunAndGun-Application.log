@@ -2,14 +2,16 @@
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(22,16): warning C4018: '<': signed/unsigned mismatch
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(32,65): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(33,65): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+  GameManager.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.h(15,18): warning C4200: nonstandard extension used: zero-sized array in struct/union
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.h(15,18): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
   Mouse.cpp
   GameObjects.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(4,1): warning C4005: 'PI': macro redefinition
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.h(8): message : see previous definition of 'PI'
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(105,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(104,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Gameloop.cpp
   main.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   TileMap.cpp
+  UIManager.cpp
   Generating Code...
   RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\Debug\RunAndGun-Application.exe

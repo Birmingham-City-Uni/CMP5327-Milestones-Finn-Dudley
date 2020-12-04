@@ -146,17 +146,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BulletManager.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="GameObjects.cpp" />
     <ClCompile Include="Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletManager.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObjects.h" />
     <ClInclude Include="Gameloop.h" />
     <ClInclude Include="Tilemap.h" />
+    <ClInclude Include="UIManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\data\level1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

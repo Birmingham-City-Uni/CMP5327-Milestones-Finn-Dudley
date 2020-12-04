@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <vector>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
-#define PI 3.14159265
+#define PI 3.14159
 
 struct Bullet {
 	int x, y, rotation, distance;
@@ -15,7 +16,7 @@ class BulletManager {
 public:
 
 private:
-	SDL_Texture* texture;
+	SDL_Texture* pelletTexture;
 	std::vector<Bullet> bullets;
 	
 	const int movementSpeed = 10;

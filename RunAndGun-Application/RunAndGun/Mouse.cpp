@@ -31,9 +31,9 @@ public:
 	}
 
 	bool init(SDL_Renderer* _renderer) {
-		SDL_Surface* tmpCrosshairSurface = IMG_Load("assets/crosshair.png");
-		crosshairTexture = SDL_CreateTextureFromSurface(_renderer, tmpCrosshairSurface);
-		SDL_FreeSurface(tmpCrosshairSurface);
+		SDL_Surface* tmpSurface = IMG_Load("./assets/textures/crosshair.png");
+		this->crosshairTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+		SDL_FreeSurface(tmpSurface);
 		if (crosshairTexture == NULL) {
 			return false;
 		}

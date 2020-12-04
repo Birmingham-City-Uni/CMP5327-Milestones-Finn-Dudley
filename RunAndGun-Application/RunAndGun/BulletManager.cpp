@@ -1,7 +1,7 @@
 #include "BulletManager.h"
 
 BulletManager::BulletManager(){
-	this->texture = nullptr;
+	this->pelletTexture = nullptr;
 }
 
 BulletManager::~BulletManager() {
@@ -10,8 +10,8 @@ BulletManager::~BulletManager() {
 
 bool BulletManager::init(SDL_Renderer* _renderer, SDL_Texture* _texture){
 
-	this->texture = _texture;
-	if (this->texture == NULL) {
+	this->pelletTexture = _texture;
+	if (this->pelletTexture == NULL) {
 		return false;
 	}
 
@@ -43,10 +43,10 @@ void BulletManager::draw(SDL_Renderer* _renderer) {
 	SDL_Point center = { 0,0 };
 	for (auto& bullet : bullets) {
 		SDL_Rect pos = { bullet.x + 10, bullet.y, 6, 6 };
-		SDL_RenderCopyEx(_renderer, this->texture, 0, &pos, bullet.rotation, &center, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, this->pelletTexture, 0, &pos, bullet.rotation, &center, SDL_FLIP_NONE);
 	}
 }
 
 void BulletManager::clean() {
-	SDL_DestroyTexture(this->texture);
+	SDL_DestroyTexture(this->pelletTexture);
 }

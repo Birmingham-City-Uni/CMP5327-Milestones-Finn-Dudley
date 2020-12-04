@@ -8,6 +8,8 @@
 #include "Mouse.cpp"
 #include "BulletManager.h"
 
+#define PI 3.14159
+
 #pragma region GameObject Class
 
 class GameObject abstract {
@@ -98,12 +100,6 @@ public:
 		visable = _bool;
 	}
 
-protected:
-	/// <summary>
-	/// Sets the GameObjects current render Texture.
-	/// </summary>
-	/// <param name="_filename">- The File directory of the Texture</param>
-	/// <returns></returns>
 	SDL_Texture* getTexture(SDL_Renderer* _renderer, std::string _filename);
 };
 #pragma endregion

@@ -1,7 +1,6 @@
 #include "GameObjects.h"
 
 #define RELEASEPOINTER(x) { if(x){ delete x; x = NULL;} }
-#define PI 3.14159
 
 #pragma region GameObject Definitions
 
@@ -49,15 +48,15 @@ Player::~Player() {
 
 bool Player::init(SDL_Renderer* _renderer) {
 
-	this->gameObjectTexture = getTexture(_renderer, "assets/player/player-pistol.png");
-	this->gameObjectTexture2 = getTexture(_renderer, "assets/player/player-rifle.png");
-	this->gameObjectTexture3 = getTexture(_renderer, "assets/player/player-shotgun.png");
+	this->gameObjectTexture = getTexture(_renderer, "./assets/textures/player/player-pistol.png");
+	this->gameObjectTexture2 = getTexture(_renderer, "./assets/textures/player/player-rifle.png");
+	this->gameObjectTexture3 = getTexture(_renderer, "./assets/textures/player/player-shotgun.png");
 	if(this->gameObjectTexture == NULL || this->gameObjectTexture2 == NULL || this->gameObjectTexture3 == NULL){
 		return false;
 	}
 
 	bulletManager = new BulletManager();
-	if (!bulletManager->init(_renderer, getTexture(_renderer, "assets/pellet.png"))) {
+	if (!bulletManager->init(_renderer, getTexture(_renderer, "./assets/textures/pellet.png"))) {
 		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
 		return false;
 	}
@@ -103,7 +102,6 @@ void Player::processInput(bool *keyDown, bool *buttonDown) {
 
 void Player::update(){
 	rotationAngle = -90 + atan2((position.y + rotationPoint.y) - mouse->getY(), (position.x + rotationPoint.x) - mouse->getX()) * (180 / PI);
-
 	bulletManager->update();
 }
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <fstream>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -25,6 +28,10 @@ class Tilemap {
 public:
 
 private:
+	int MAP_TILE_PIXELS_;
+	int MAP_SIZE_X_;
+	int MAP_SIZE_Y_;
+
 	SDL_Texture* tilesetTexture;
 public:
 	Tilemap();
@@ -35,4 +42,7 @@ public:
 	void draw(SDL_Renderer* _renderer);
 
 	void clean();
+
+private:
+	void loadLevel(int _selectedLevel);
 };

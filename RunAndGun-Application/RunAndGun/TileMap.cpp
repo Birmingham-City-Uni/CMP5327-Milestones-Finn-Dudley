@@ -9,10 +9,9 @@ Tilemap::~Tilemap() {
 }
 
 bool Tilemap::init(SDL_Renderer* _renderer) {
-
-	SDL_Surface* tmpTilemapSurface = IMG_Load("./assets/tilemap.png");
-	this->tilesetTexture = SDL_CreateTextureFromSurface(_renderer, tmpTilemapSurface);
-	SDL_FreeSurface(tmpTilemapSurface);
+	SDL_Surface* tmpSurface = IMG_Load("./assets/textures/tilemap.png");
+	this->tilesetTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+	SDL_FreeSurface(tmpSurface);
 	if (tilesetTexture == NULL) {
 		return false;
 	}
@@ -33,4 +32,11 @@ void Tilemap::draw(SDL_Renderer* _renderer) {
 
 void Tilemap::clean() {
 	SDL_DestroyTexture(tilesetTexture);
+}
+
+void Tilemap::loadLevel(int _selectedLevel) {
+
+	std::fstream levelFile("assets/data/level1.json", std::fstream::binary);
+
+	levelFile.close();
 }
