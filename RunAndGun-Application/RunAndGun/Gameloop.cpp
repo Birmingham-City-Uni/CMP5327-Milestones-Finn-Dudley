@@ -56,6 +56,11 @@ bool Gameloop::Init() {
 		buttonDown[i] = false;
 	}
 
+	gameManager = new GameManager();
+	if (!gameManager->init()) {
+		std::cerr << "Failed to Initialize GameManage: " << SDL_GetError() << std::endl;
+	}
+
 	tilemap = new Tilemap();
 	if (!tilemap->init(this->renderer)) {
 		std::cerr << "Failed to Initialize Tilemap: " << SDL_GetError() << std::endl;
@@ -100,7 +105,7 @@ bool Gameloop::ProcessInput() {
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			if (e.button.button < 3) {
+			if (e.button.button < 4) {
 				buttonDown[e.button.button] = true;
 			}
 			break;
@@ -126,6 +131,8 @@ bool Gameloop::ProcessInput() {
 /// </summary>
 bool Gameloop::UnloadAssets() {
 
+	gameManager->clean();
+
 	tilemap->clean();
 	player->clean();
 	mouse->clean();
@@ -145,6 +152,8 @@ bool Gameloop::UnloadAssets() {
 void Gameloop::Update() {
 	player->update();
 	mouse->update();
+
+	gameManager->update(this->renderer, player->getCentreX(), player->getCentreY());
 }
 
 /// <summary>
@@ -155,6 +164,7 @@ void Gameloop::Draw() {
 
 	tilemap->draw(this->renderer);
 
+	gameManager->draw(this->renderer);
 	player->draw(this->renderer);
 
 	mouse->draw(this->renderer);

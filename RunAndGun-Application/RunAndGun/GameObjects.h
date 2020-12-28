@@ -2,13 +2,15 @@
 
 #include <iostream>
 #include <string>
+#include <math.h>
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "Mouse.cpp"
 #include "BulletManager.h"
 
-#define PI 3.14159
+#define HEALTHBAR_WIDTH 75
+#define HEALTHBAR_HEIGHT 5
 
 #pragma region GameObject Class
 
@@ -18,6 +20,10 @@ public:
 
 protected:
 	int health;
+	int maxHealth;
+
+	SDL_Rect healthbarBackground = {75, 75, HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT};
+	SDL_Rect healthBar = { 75, 75, HEALTHBAR_WIDTH,  HEALTHBAR_HEIGHT};
 
 	int movementSpeed;
 	int rotationAngle;
@@ -32,9 +38,9 @@ public:
 	/// Initializes the Class' assets for use.
 	/// </summary>
 	/// <returns> true if Initialized, false if not.</returns>
-	virtual bool init(SDL_Renderer* _renderer) { return true; };
+	virtual bool init(SDL_Renderer* _renderer) = 0;
 
-	virtual void update() {};
+	virtual void update() = 0;
 
 	/// <summary>
 	/// Draws the GameObject onto the screen if Visable.
@@ -64,6 +70,14 @@ public:
 	/// <returns>The Gameobjects Y Position</returns>
 	int getY() {
 		return position.x;
+	}
+
+	int getCentreX() {
+		return position.x + rotationPoint.x;
+	}
+
+	int getCentreY() {
+		return position.y + rotationPoint.y;
 	}
 
 	/// <summary>
@@ -100,7 +114,33 @@ public:
 		visable = _bool;
 	}
 
+	/// <summary>
+	/// Subtracts from the Objects Health.
+	/// </summary>
+	/// <param name="_value">- The Amount to change the Objects Health.</param>
+	void damageObject(int _value) {
+		this->health -= _value;
+		this->adjustHealthRect();
+	}
+
+	/// <summary>
+	/// Adds to the Objects Health.
+	/// </summary>
+	/// <param name="_value">- The Amount to change the Objects Health.</param>
+	void healObject(int _value) {
+		this->health += _value;
+		this->adjustHealthRect();
+	}
+
+	void rotateTowardsPoint(int _x, int _y);
+
+protected:
+
 	SDL_Texture* getTexture(SDL_Renderer* _renderer, std::string _filename);
+	
+	void drawHealthBar(SDL_Renderer* _renderer);
+	void positionHealthbar(int _x, int _y);
+	void adjustHealthRect();
 };
 #pragma endregion
 
@@ -108,8 +148,6 @@ public:
 
 class Player : public GameObject{
 private:
-	int rotationSpeed;
-
 	int selectedWeapon = 1;
 
 	SDL_Texture* gameObjectTexture2;
@@ -117,6 +155,7 @@ private:
 
 	Mouse* mouse;
 	BulletManager* bulletManager;
+
 public:
 	Player(Mouse* mouse);
 	~Player();
@@ -126,8 +165,9 @@ public:
 
 	void update() final override;
 	void draw(SDL_Renderer* _renderer) final override;
-private:
 
+private:
+	void fireSelectedWeapon();
 };
 #pragma endregion
 
@@ -139,10 +179,13 @@ public:
 private:
 
 public:
+	Zombie();
+	~Zombie();
 
 	bool init(SDL_Renderer* _renderer) final override;
 
 	void update() final override;
+
 private:
 
 };

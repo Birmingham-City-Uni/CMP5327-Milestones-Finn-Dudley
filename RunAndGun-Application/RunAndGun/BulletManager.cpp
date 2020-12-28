@@ -18,13 +18,32 @@ bool BulletManager::init(SDL_Renderer* _renderer, SDL_Texture* _texture){
 	return true;
 }
 
-void BulletManager::fireBullet(int _x, int _y, int _rotationAngle) {
-	if (FireTimer < SDL_GetTicks() - lastFire) {
-			
-		bullets.push_back(Bullet{ _x, _y, _rotationAngle, 0 });
-		lastFire = SDL_GetTicks();
-	}
+void BulletManager::shootPistol(int _x, int _y,int& _rotationAngle) {
+	if (SDL_GetTicks() > lastFire) {
+		lastFire = SDL_GetTicks() + pistolTime;
 
+		fireBullet(_x, _y, _rotationAngle);
+	}
+}
+void BulletManager::shootRifle(int _x, int _y, int& _rotationAngle) {
+	if (SDL_GetTicks() > lastFire) {
+		lastFire = SDL_GetTicks() + rifleTime;
+
+		fireBullet(_x, _y, _rotationAngle);
+	}
+}
+void BulletManager::shootShotgun(int _x, int _y, int& _rotationAngle) {
+	if (SDL_GetTicks() > lastFire) {
+		lastFire = SDL_GetTicks() + shotgunTime;
+
+		fireBullet(_x, _y, _rotationAngle);
+		fireBullet(_x, _y, _rotationAngle - 5);
+		fireBullet(_x, _y, _rotationAngle + 5);
+	}
+}
+
+void BulletManager::fireBullet(int _x, int _y, int _rotationAngle) {
+		bullets.push_back(Bullet{ _x, _y, _rotationAngle, 0 });
 }
 
 void BulletManager::update() {

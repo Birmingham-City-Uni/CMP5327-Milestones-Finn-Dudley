@@ -1,13 +1,13 @@
 ﻿  BulletManager.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(22,16): warning C4018: '<': signed/unsigned mismatch
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(32,65): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(33,65): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(51,65): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(52,65): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
   GameManager.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.h(15,18): warning C4200: nonstandard extension used: zero-sized array in struct/union
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.h(15,18): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.cpp(21,37): warning C4018: '>': signed/unsigned mismatch
   Mouse.cpp
   GameObjects.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(104,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(19,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(42,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(194,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Gameloop.cpp
   main.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
