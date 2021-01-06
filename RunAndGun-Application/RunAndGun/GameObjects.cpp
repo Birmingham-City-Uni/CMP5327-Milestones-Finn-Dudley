@@ -15,22 +15,6 @@ void GameObject::clean() {
 	SDL_DestroyTexture(this->gameObjectTexture);
 }
 
-bool GameObject::checkCollision(Circle& _obj1, Circle& _obj2) {
-	return true;
-}
-
-bool GameObject::checkCollision(Circle& _obj1, SDL_Rect& _obj2) {
-	return true;
-}
-
-void GameObject::shiftColliders() {
-	collider_Box.x = position.x;
-	collider_Box.y = position.y;
-
-	collider_Circle.x = position.x + rotationPoint.x;
-	collider_Circle.y = position.y + rotationPoint.y;
-}
-
 void GameObject::rotateTowardsPoint(int _x, int _y) {
 	this->rotationAngle = -90 + atan2((position.y + rotationPoint.y) - _y, (position.x + rotationPoint.x) - _x) * (180 / PI);
 }
@@ -65,15 +49,11 @@ void GameObject::positionHealthbar(int _x,int  _y) {
 	healthbarBackground.y = healthBar.y;
 }
 
-double GameObject::distanceSquared(int _obj1_x, int _obj1_y, int _obj2_x, int _obj2_y) {
-	return 0;
-}
-
 #pragma endregion
 
 #pragma region Player Definitions
 
-Player::Player(Mouse* _mouse, BulletManager* _bulletManager) : mouse(_mouse), bulletManager(_bulletManager) {
+Player::Player(Mouse* _mouse) : mouse(_mouse){
 
 	this->maxHealth = 100;
 	this->health = this->maxHealth;
@@ -81,26 +61,22 @@ Player::Player(Mouse* _mouse, BulletManager* _bulletManager) : mouse(_mouse), bu
 	this->gameObjectTexture = nullptr;
 	this->gameObjectTexture2 = nullptr;
 	this->gameObjectTexture3 = nullptr;
+	this->bulletManager = nullptr;
 
 	this->position = { 1280 / 2, 720 / 2, 50, 75 };
-	this->oldPosX = nullptr; this->oldPosY = nullptr;
 	this->rotationPoint = { (int)(position.w / 2), (int)(position.h * 0.75)};
 	this->visable = true;
 
-	this->movementSpeed = 1;
-	this->velocityX = 0;
-	this->velocityY = 0;
+	this->movementSpeed = 3;
 	this->rotationAngle = 0;
-
-	collider_Circle.radius = position.w / 4;
-	collider_Box.w = position.w;
-	collider_Box.h = position.h / 2;
-	this->shiftColliders();
 }
 Player::~Player() {
-	RELEASEPOINTER(bulletManager);
-	RELEASEPOINTER(oldPosX);
-	RELEASEPOINTER(oldPosY);
+	bulletManager->clean();
+
+	if (bulletManager) {
+		delete bulletManager;
+		bulletManager = nullptr;
+	}
 }
 
 bool Player::init(SDL_Renderer* _renderer) {
@@ -115,51 +91,32 @@ bool Player::init(SDL_Renderer* _renderer) {
 		return false;
 	}
 
+	bulletManager = new BulletManager();
+	if (!bulletManager->init(_renderer, getTexture(_renderer, "./assets/textures/pellet.png"))) {
+		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
 	return true;
 }
 
 void Player::processInput(bool *keyDown, bool *buttonDown) {
-	
+
 	//Player Movement
 	if (keyDown[SDL_SCANCODE_W] || keyDown[SDL_SCANCODE_UP]) {
-		velocityY -= movementSpeed;
-		if (velocityY < -MAX_MOVEMENT_SPEED) {
-			velocityY = -MAX_MOVEMENT_SPEED;
-		}
-	}
-	else if (velocityY < 0) {
-		velocityY += movementSpeed;
+		position.y -= movementSpeed;
 	}
 
 	if (keyDown[SDL_SCANCODE_S] || keyDown[SDL_SCANCODE_DOWN]) {
-		velocityY += movementSpeed;
-		if (velocityY > MAX_MOVEMENT_SPEED) {
-			velocityY = MAX_MOVEMENT_SPEED;
-		}
-	}
-	else if (velocityY > 0)
-	{
-		velocityY -= movementSpeed;
+		position.y += movementSpeed;
 	}
 
 	if (keyDown[SDL_SCANCODE_A] || keyDown[SDL_SCANCODE_LEFT]) {
-		velocityX -= movementSpeed;
-		if (velocityX < -MAX_MOVEMENT_SPEED) {
-			velocityX = -MAX_MOVEMENT_SPEED;
-		}
-	}
-	else if (velocityX < 0) {
-		velocityX += movementSpeed;
+		position.x -= movementSpeed;
 	}
 
 	if (keyDown[SDL_SCANCODE_D] || keyDown[SDL_SCANCODE_RIGHT]) {
-		velocityX += movementSpeed;		
-		if (velocityX > MAX_MOVEMENT_SPEED) {
-			velocityX = MAX_MOVEMENT_SPEED;
-		}
-	}
-	else if (velocityX > 0) {
-		velocityX -= movementSpeed;
+		position.x += movementSpeed;
 	}
 
 	// Player Shooting
@@ -183,34 +140,15 @@ void Player::processInput(bool *keyDown, bool *buttonDown) {
 }
 
 void Player::update(){
-
-	oldPosX = &position.x;
-	oldPosY = &position.y;
-
-	position.x += velocityX;
-	shiftColliders();
-
-
-	if (getCentreX() - collider_Circle.radius < 0 || getCentreX() + collider_Circle.radius > 1280) {
-		position.x -= velocityX;
-		shiftColliders();
-	}
-
-	position.y += velocityY;
-	shiftColliders();
-
-	if (getCentreY() - collider_Circle.radius < 0 || getCentreY() + collider_Circle.radius > 720) {
-		position.y -= velocityY;
-		shiftColliders();
-	}
-
 	rotateTowardsPoint(mouse->getX(), mouse->getY());
+	bulletManager->update();
 
 	positionHealthbar(position.x - HEALTHBAR_WIDTH / 4, position.y);
 }
 
 void Player::draw(SDL_Renderer* _renderer) {
 	if (visable) {
+		bulletManager->draw(_renderer);
 		switch (selectedWeapon) {
 		case 1: default:
 			SDL_RenderCopyEx(_renderer, this->gameObjectTexture, 0, &position, this->rotationAngle, &rotationPoint, SDL_FLIP_NONE);
@@ -242,6 +180,8 @@ void Player::fireSelectedWeapon() {
 			bulletManager->shootShotgun(getCentreX(), getCentreY(), rotationAngle);
 			break;
 		}
+
+
 }
 #pragma endregion
 
@@ -257,12 +197,8 @@ Zombie::Zombie() {
 	this->visable = true;
 	this->position = { 1280 / 2, 720 / 2, 50, 50 };
 	this->rotationPoint = { position.w/2, position.h/2 };
-	this->collider_Box.w = position.w;
-	this->collider_Box.h = position.h;
 
 	this->gameObjectTexture = nullptr;
-
-	this->shiftColliders();
 }
 
 Zombie::~Zombie() {
@@ -279,24 +215,9 @@ bool Zombie::init(SDL_Renderer* _renderer) {
 	return true;
 }
 
-void Zombie::update(BulletManager* _bulletManager) {
+void Zombie::update() {
 	if (visable) {
-
-		// Movement Here
-
-		shiftColliders();
 		positionHealthbar(position.x - HEALTHBAR_WIDTH / 4, (position.y + position.h) + 10);
-
-		SDL_Rect intersectResult;
-		for (auto& bullet : _bulletManager->bullets) {
-			SDL_Rect tempBulletRect = { bullet.x, bullet.y, 10, 10 };
-
-			if (SDL_IntersectRect(&collider_Box, &tempBulletRect, &intersectResult)) {
-				std::cout << "Colliding bullet and object" << std::endl;
-				damageObject(10);
-				bullet.distance = 1000;
-			}
-		}
 	}
 }
 #pragma endregion

@@ -31,7 +31,7 @@ bool Gameloop::Init() {
 	}
 	else {
 		// Create SDL Window
-		window = SDL_CreateWindow("Run and Gun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_HEIGHT, SCREEN_WIDTH, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Run and Gun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 		if (window == NULL) {
 			std::cerr << "Failed to Open Window: " << SDL_GetError() << std::endl;
 			return false;
@@ -56,14 +56,8 @@ bool Gameloop::Init() {
 		buttonDown[i] = false;
 	}
 
-bulletManager = new BulletManager();
-	if (!bulletManager->init(this->renderer)) {
-		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	gameManager = new GameManager(this->bulletManager);
-	if (!gameManager->init(renderer)) {
+	gameManager = new GameManager();
+	if (!gameManager->init()) {
 		std::cerr << "Failed to Initialize GameManage: " << SDL_GetError() << std::endl;
 	}
 
@@ -79,7 +73,7 @@ bulletManager = new BulletManager();
 		return false;
 	}
 
-	player = new Player(this->mouse, this->bulletManager);
+	player = new Player(this->mouse);
 	if (!player->init(this->renderer)) {
 		std::cerr << "Failed to Initialize Player: " << SDL_GetError() << std::endl;
 		return false;
@@ -138,7 +132,6 @@ bool Gameloop::ProcessInput() {
 bool Gameloop::UnloadAssets() {
 
 	gameManager->clean();
-	bulletManager->clean();
 
 	tilemap->clean();
 	player->clean();
@@ -160,7 +153,6 @@ void Gameloop::Update() {
 	player->update();
 	mouse->update();
 
-	bulletManager->update();
 	gameManager->update(this->renderer, player->getCentreX(), player->getCentreY());
 }
 
@@ -172,7 +164,6 @@ void Gameloop::Draw() {
 
 	tilemap->draw(this->renderer);
 
-	bulletManager->draw(this->renderer);
 	gameManager->draw(this->renderer);
 	player->draw(this->renderer);
 

@@ -32,8 +32,6 @@ private:
 	int MAP_SIZE_X_;
 	int MAP_SIZE_Y_;
 
-	int collideableTiles[30];
-
 	SDL_Texture* tilesetTexture;
 public:
 	Tilemap();
