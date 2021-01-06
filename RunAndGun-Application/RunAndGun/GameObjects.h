@@ -12,11 +12,20 @@
 #define HEALTHBAR_WIDTH 75
 #define HEALTHBAR_HEIGHT 5
 
+#define MAX_MOVEMENT_SPEED 3
+
+struct Circle {
+	int radius, x, y;
+};
+
 #pragma region GameObject Class
 
 class GameObject abstract {
+
 public:
 	bool visable;
+	Circle collider_Circle;
+	SDL_Rect collider_Box;
 
 protected:
 	int health;
@@ -26,9 +35,12 @@ protected:
 	SDL_Rect healthBar = { 75, 75, HEALTHBAR_WIDTH,  HEALTHBAR_HEIGHT};
 
 	int movementSpeed;
+	int velocityX, velocityY;
 	int rotationAngle;
 
 	SDL_Rect position;
+	int* oldPosX; 
+	int* oldPosY;
 	SDL_Point rotationPoint;
 
 	SDL_Texture* gameObjectTexture;
@@ -39,8 +51,6 @@ public:
 	/// </summary>
 	/// <returns> true if Initialized, false if not.</returns>
 	virtual bool init(SDL_Renderer* _renderer) = 0;
-
-	virtual void update() = 0;
 
 	/// <summary>
 	/// Draws the GameObject onto the screen if Visable.
@@ -78,6 +88,14 @@ public:
 
 	int getCentreY() {
 		return position.y + rotationPoint.y;
+	}
+
+	int getWidth() {
+		return position.w;
+	}
+
+	int getHeight() {
+		return position.h;
 	}
 
 	/// <summary>
@@ -121,6 +139,10 @@ public:
 	void damageObject(int _value) {
 		this->health -= _value;
 		this->adjustHealthRect();
+
+		if (this->health <= 0) {
+			this->visable = false;
+		}
 	}
 
 	/// <summary>
@@ -132,7 +154,22 @@ public:
 		this->adjustHealthRect();
 	}
 
+	SDL_Rect& getBoxCollider() {
+		return collider_Box;
+	}
+
+	Circle& getCircleCollider() {
+		return collider_Circle;
+	}
+
+	void shiftColliders();
+
+	bool checkCollision(Circle& _obj1, Circle& _obj2);
+	bool checkCollision(Circle& _obj1, SDL_Rect& _obj2);
+
 	void rotateTowardsPoint(int _x, int _y);
+
+	void adjustHealthRect();
 
 protected:
 
@@ -140,7 +177,8 @@ protected:
 	
 	void drawHealthBar(SDL_Renderer* _renderer);
 	void positionHealthbar(int _x, int _y);
-	void adjustHealthRect();
+
+	double distanceSquared(int _object1_x, int _object1_y, int _object2_x, int _object2_y);
 };
 #pragma endregion
 
@@ -157,13 +195,13 @@ private:
 	BulletManager* bulletManager;
 
 public:
-	Player(Mouse* mouse);
+	Player(Mouse* mouse, BulletManager* _bulletManager);
 	~Player();
 
 	bool init(SDL_Renderer* _renderer) final override;
 	void processInput(bool * keyDown, bool* buttonDown);
 
-	void update() final override;
+	void update();
 	void draw(SDL_Renderer* _renderer) final override;
 
 private:
@@ -176,6 +214,7 @@ private:
 class Zombie : public GameObject {
 public:
 
+
 private:
 
 public:
@@ -184,7 +223,11 @@ public:
 
 	bool init(SDL_Renderer* _renderer) final override;
 
-	void update() final override;
+	void update(BulletManager* _bulletManager);
+
+	void resetObjectHealth() {
+		this->health = this->maxHealth;
+	}
 
 private:
 
