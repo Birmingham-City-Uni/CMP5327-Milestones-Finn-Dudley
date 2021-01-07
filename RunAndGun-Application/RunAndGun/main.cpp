@@ -7,8 +7,8 @@ Gameloop* gameloop;
 
 bool quitting = false;
 
-int main( int argc, char* args[])
-{
+int main( int argc, char* args[]) {
+
 	gameloop = new Gameloop();
 	if (!gameloop->Init()) {
 		return 1;

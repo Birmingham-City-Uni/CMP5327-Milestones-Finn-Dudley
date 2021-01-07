@@ -292,9 +292,8 @@ void Zombie::update(BulletManager* _bulletManager) {
 			SDL_Rect tempBulletRect = { bullet.x, bullet.y, 10, 10 };
 
 			if (SDL_IntersectRect(&collider_Box, &tempBulletRect, &intersectResult)) {
-				std::cout << "Colliding bullet and object" << std::endl;
 				damageObject(10);
-				bullet.distance = 1000;
+				bullet.isVisable = false;
 			}
 		}
 	}

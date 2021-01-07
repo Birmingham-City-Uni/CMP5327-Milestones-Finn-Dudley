@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -16,6 +17,7 @@ class BulletManager {
 	friend class Zombie;
 public:
 	std::vector<Bullet> bullets;
+	std::deque<Bullet> bulletPool;
 
 private:
 	SDL_Texture* pelletTexture;
@@ -33,6 +35,9 @@ public:
 	~BulletManager();
 
 	bool init(SDL_Renderer* _renderer);
+	void update();
+	void draw(SDL_Renderer* _renderer);
+	void clean();
 
 	void shootPistol(int _x, int _y, int& _rotationAngle);
 	void shootRifle(int _x, int _y, int& _rotationAngle);
@@ -42,13 +47,11 @@ public:
 		lastFire = SDL_GetTicks() + 150;
 	}
 
-	void update();
-	void draw(SDL_Renderer* _renderer);
-
-	void clean();
 private:
 
 	void fireBullet(int _x, int _y, int _rotationAngle);
 
+	void growBulletPool();
+	void addBulletToPool(Bullet _bullet);
 
 };

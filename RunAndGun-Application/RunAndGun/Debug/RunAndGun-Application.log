@@ -1,6 +1,7 @@
 ﻿  BulletManager.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(55,66): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(56,66): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(30,74): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(31,74): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
   GameManager.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.cpp(24,37): warning C4018: '>': signed/unsigned mismatch
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.cpp(32,20): warning C4018: '<': signed/unsigned mismatch

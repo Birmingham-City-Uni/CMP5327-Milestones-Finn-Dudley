@@ -48,6 +48,16 @@ void GameManager::draw(SDL_Renderer* _renderer) {
 
 void GameManager::clean() {
 	for (auto& enemy : enemies) enemy.clean();
+	
+	if (!enemies.empty()) {
+		for (auto enemy : enemies) enemy.clean();
+		enemies.clear();
+	}
+	
+	if (!enemyPool.empty()) {
+		for (auto& enemy : enemies) enemy.clean();
+		enemyPool.clear();
+	}
 }
 
 void GameManager::growPool(SDL_Renderer* _renderer) {
