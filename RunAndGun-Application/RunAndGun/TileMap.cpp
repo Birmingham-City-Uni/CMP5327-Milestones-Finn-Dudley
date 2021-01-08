@@ -1,7 +1,7 @@
 #include "Tilemap.h"
 
-Tilemap::Tilemap() {
-
+Tilemap::Tilemap(int _selectedLevel) : selectedLevel(_selectedLevel) {
+	this->tileset = nullptr;
 }
 
 Tilemap::~Tilemap() {
@@ -10,9 +10,13 @@ Tilemap::~Tilemap() {
 
 bool Tilemap::init(SDL_Renderer* _renderer) {
 	SDL_Surface* tmpSurface = IMG_Load("./assets/textures/tilemap.png");
-	this->tilesetTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+	this->tileset = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
-	if (tilesetTexture == NULL) {
+	if (tileset == NULL) {
+		return false;
+	}
+
+	if (!loadLevel()) {
 		return false;
 	}
 
@@ -20,23 +24,57 @@ bool Tilemap::init(SDL_Renderer* _renderer) {
 }
 
 void Tilemap::draw(SDL_Renderer* _renderer) {
-	for (int _y = 0; _y < MAP_SIZE_Y; _y++){
-		for (int _x = 0; _x < MAP_SIZE_X; _x++) {
-
-			SDL_Rect srcRect = { (MAP_DATA[_y][_x] % 8) * 32, ((MAP_DATA[_y][_x]) / 8) * 32, 32, 32 };
-			SDL_Rect destRect = { _x * MAP_TILE_PIXELS, _y * MAP_TILE_PIXELS, MAP_TILE_PIXELS, MAP_TILE_PIXELS };
-			SDL_RenderCopy(_renderer, tilesetTexture, &srcRect, &destRect);
-		}
-	}
+		
+	for (auto tile : map_Tiles) SDL_RenderCopy(_renderer, tileset, &tile.getTexturePos(), &tile.getTilePos());
 }
 
 void Tilemap::clean() {
-	SDL_DestroyTexture(tilesetTexture);
+	SDL_DestroyTexture(tileset);
+
+	collideableTiles.clear();
+	map_Tiles.clear();
 }
 
-void Tilemap::loadLevel(int _selectedLevel) {
+bool Tilemap::loadLevel() {
+	std::string chosenLevel = "./assets/data/levels/level.txt";
+	chosenLevel.insert(26, std::to_string(selectedLevel));
 
-	std::fstream levelFile("assets/data/level1.json", std::fstream::binary);
+	std::ifstream levelFile(chosenLevel);
+
+	if (levelFile.fail()) {
+		std::cerr << "Unable to Load Level File" << std::endl;
+		return false;
+	}
+	else {
+		
+		for (int _y = 0; _y < MAP_SIZE_Y; _y++) {
+			for (int _x = 0; _x < MAP_SIZE_X; _x++) {
+				int tileData;
+				levelFile >> tileData;
+
+				Tile instance = Tile(_x, _y, tileData, MAP_TILE_PIXELS);
+				switch (tileData) {
+				
+					case 32:
+					case 33:
+					case 40:
+					case 41:
+					case 43:
+					case 44:
+						collideableTiles.push_back(instance);
+				
+					default:
+						break;
+				}
+
+				map_Tiles.push_back(instance);
+			}
+		}
+	}
 
 	levelFile.close();
+
+	std::cout << "File Read Complete" << std::endl;
+
+	return true;
 }

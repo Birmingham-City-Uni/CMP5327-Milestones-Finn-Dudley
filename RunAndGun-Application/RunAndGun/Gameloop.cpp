@@ -6,6 +6,9 @@ Gameloop::Gameloop() {
 	window = nullptr;
 	renderer = nullptr;
 
+	gameManager = nullptr;
+	uiManager = nullptr;
+	bulletManager = nullptr;
 	tilemap = nullptr;
 	player = nullptr;
 	mouse = nullptr;
@@ -40,6 +43,9 @@ bool Gameloop::Init() {
 	if (IMG_Init(IMG_INIT_PNG) == 0) {
 		std::cerr << "SDL_image Could not Initialize: " << SDL_GetError() << std::endl;
 	}
+	if (TTF_Init() == -1) {
+		std::cerr << "SDL_ttf Could not Initialize: " << SDL_GetError() << std::endl;
+	}
 
 	// Add Renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -56,18 +62,30 @@ bool Gameloop::Init() {
 		buttonDown[i] = false;
 	}
 
-bulletManager = new BulletManager();
+	uiManager = new UIManager();
+	if (!uiManager->init(this->renderer)) {
+		std::cerr << "Failed to Initialize UIManager: " << SDL_GetError() << std::endl;
+	}
+
+	
+	menu = new Menu();
+	menu->init(this->renderer, this->uiManager);
+	menu->draw(this->renderer);
+	while (menu->processInput()) { }
+	int selectedMap = menu->selectedMap;
+
+	bulletManager = new BulletManager();
 	if (!bulletManager->init(this->renderer)) {
 		std::cerr << "Failed to Initialize Bullet Manager: " << SDL_GetError() << std::endl;
 		return false;
 	}
 
 	gameManager = new GameManager(this->bulletManager);
-	if (!gameManager->init(renderer)) {
-		std::cerr << "Failed to Initialize GameManage: " << SDL_GetError() << std::endl;
+	if (!gameManager->init(this->renderer)) {
+		std::cerr << "Failed to Initialize GameManager: " << SDL_GetError() << std::endl;
 	}
 
-	tilemap = new Tilemap();
+	tilemap = new Tilemap(selectedMap);
 	if (!tilemap->init(this->renderer)) {
 		std::cerr << "Failed to Initialize Tilemap: " << SDL_GetError() << std::endl;
 		return false;
@@ -85,6 +103,7 @@ bulletManager = new BulletManager();
 		return false;
 	}
 	
+
 	return true;
 }
 
@@ -92,6 +111,7 @@ bulletManager = new BulletManager();
 /// Function to process any user input to the game window
 /// </summary>
 bool Gameloop::ProcessInput() {
+	if (!player->visable) return false;
 
 	SDL_Event e;
 
@@ -138,12 +158,12 @@ bool Gameloop::ProcessInput() {
 bool Gameloop::UnloadAssets() {
 
 	gameManager->clean();
+	uiManager->clean();
 	bulletManager->clean();
 
 	tilemap->clean();
 	player->clean();
 	mouse->clean();
-
 
 	SDL_DestroyRenderer(renderer);
 	renderer = nullptr;
@@ -157,11 +177,12 @@ bool Gameloop::UnloadAssets() {
 /// Function to Update the game enviroment
 /// </summary>
 void Gameloop::Update() {
-	player->update();
+	player->update(tilemap->collideableTiles);
 	mouse->update();
 
 	bulletManager->update();
-	gameManager->update(this->renderer, player->getCentreX(), player->getCentreY());
+	gameManager->update(this->renderer, this->player, tilemap->collideableTiles);
+	uiManager->updateScoreText(this->renderer, gameManager->getScore());
 }
 
 /// <summary>
@@ -177,6 +198,8 @@ void Gameloop::Draw() {
 	player->draw(this->renderer);
 
 	mouse->draw(this->renderer);
+
+	uiManager->draw(this->renderer, player->getSelectedWeapon());
 
 	SDL_RenderPresent(this->renderer);
 	SDL_Delay(16);

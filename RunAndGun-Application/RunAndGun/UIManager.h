@@ -8,23 +8,31 @@
 #include <SDL_ttf.h>
 
 class UIManager {
-public:
 
 private:
+	int lastScore;
+	int selectedWeaponUI;
 
-	SDL_Texture* healthbarTexture;
+	TTF_Font* textFont;
+
+	SDL_Texture* scoreFontTexture;
+	SDL_Color scoreColor;
+	SDL_Rect scorePosition;
 
 	SDL_Texture* rifleBulletTexture;
 	SDL_Texture* pistolBulletTexture;
 	SDL_Texture* shotgunShellTexture;
+	SDL_Rect weaponTypePosition;
+
 public:
 	UIManager();
 	~UIManager();
 
 	bool init(SDL_Renderer* _renderer);
-	void draw(SDL_Renderer* _renderer);
+	void draw(SDL_Renderer* _renderer, int _selectedWeapon);
 	void clean();
 
-private:
+	void updateScoreText(SDL_Renderer* _renderer, int _score);
 
+	SDL_Texture* createTextTexture(SDL_Renderer* _renderer, std::string _textForTexture, SDL_Color _textColor);
 };

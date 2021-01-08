@@ -5,7 +5,7 @@ GameManager::GameManager(BulletManager* _bulletManager) : bulletManager(_bulletM
 	this->currentWave = 0;
 
 	this->lastSpawnTime = 0;
-	this->newWaveTime = 5000;
+	this->newWaveTime = 2500;
 }
 
 GameManager::~GameManager() {
@@ -15,14 +15,32 @@ GameManager::~GameManager() {
 bool GameManager::init(SDL_Renderer* _renderer) {
 
 	growPool(_renderer);
-	spawnEnemy(_renderer, rand() % 1240, rand() % 680);
 
 	return true;
 }
 
-void GameManager::update(SDL_Renderer* _renderer, int _playerX, int _playerY) {
+void GameManager::update(SDL_Renderer* _renderer, Player* _player, std::vector<Tile> _collideableTiles) {
 	if (SDL_GetTicks() - lastSpawnTime > newWaveTime) {
-		spawnEnemy(_renderer, rand() % 1240, rand() % 680);
+		int ranNum = rand() % 4 + 1;
+		switch (ranNum) {
+			default:
+			case 1:
+				spawnEnemy(_renderer, -30, 340);
+				break;
+
+			case 2:
+				
+				spawnEnemy(_renderer, 1270, 340);
+				break;
+
+			case 3:
+				spawnEnemy(_renderer, 620, -30);
+				break;
+
+			case 4:
+				spawnEnemy(_renderer, 620, 750);
+				break;
+		}
 
 		currentWave++;
 		std::cout << "Current Wave: " << currentWave << std::endl;
@@ -31,10 +49,11 @@ void GameManager::update(SDL_Renderer* _renderer, int _playerX, int _playerY) {
 
 	for (int i = 0; i < enemies.size(); i++) {
 		if (enemies[i].visable) {
-			enemies[i].rotateTowardsPoint(_playerX, _playerY);
-			enemies[i].update(bulletManager);
+			enemies[i].rotateTowardsPoint(_player->getCentreX(), _player->getCentreY());
+			enemies[i].update(bulletManager, _player, _collideableTiles);
 		}
 		else if (!enemies[i].visable) {
+			score += 10;
 			addToPool(enemies[i]);
 			enemies.erase(enemies.begin() + i);
 			return;
@@ -46,17 +65,17 @@ void GameManager::draw(SDL_Renderer* _renderer) {
 	for (auto& enemy : enemies) enemy.draw(_renderer);
 }
 
-void GameManager::clean() {
-	for (auto& enemy : enemies) enemy.clean();
-	
+void GameManager::clean() {	
 	if (!enemies.empty()) {
 		for (auto enemy : enemies) enemy.clean();
 		enemies.clear();
+		enemies.shrink_to_fit();
 	}
 	
 	if (!enemyPool.empty()) {
 		for (auto& enemy : enemies) enemy.clean();
 		enemyPool.clear();
+		enemyPool.shrink_to_fit();
 	}
 }
 

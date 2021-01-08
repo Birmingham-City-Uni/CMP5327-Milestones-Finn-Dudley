@@ -2,41 +2,33 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <string>
 
 #include <SDL.h>
 #include <SDL_image.h>
 
-#define MAP_SIZE_X 41
+#include "Tile.h"
+
+#define TOTAL_TILES 943
+
+#define MAP_SIZE_X 40
 #define MAP_SIZE_Y 23
 
 #define MAP_TILE_PIXELS 32
 
-/// <summary>
-/// Tile Data to know which type of tile to load.
-/// Size will be adjusted when tilemap is finalized.
-/// </summary>
-const int MAP_DATA[MAP_SIZE_Y][MAP_SIZE_X] = {
-	{5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5},
-	{5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
-	{5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
-	{5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
-	{5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
-	{5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5}
-};
-
 class Tilemap {
 public:
 
+	std::vector<Tile> collideableTiles;
+
 private:
-	int MAP_TILE_PIXELS_;
-	int MAP_SIZE_X_;
-	int MAP_SIZE_Y_;
+	int selectedLevel;
+	std::vector<Tile> map_Tiles;
 
-	int collideableTiles[30];
-
-	SDL_Texture* tilesetTexture;
+	SDL_Texture* tileset;
 public:
-	Tilemap();
+	Tilemap(int _selectedLevel);
 	~Tilemap();
 
 	bool init(SDL_Renderer* _renderer);
@@ -46,5 +38,5 @@ public:
 	void clean();
 
 private:
-	void loadLevel(int _selectedLevel);
+	bool loadLevel();
 };

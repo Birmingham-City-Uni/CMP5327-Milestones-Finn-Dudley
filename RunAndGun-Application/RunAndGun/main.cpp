@@ -2,10 +2,11 @@
 #include <future>
 
 #include "Gameloop.h";
+#include "Menu.h";
+
 
 Gameloop* gameloop;
 
-bool quitting = false;
 
 int main( int argc, char* args[]) {
 
@@ -13,7 +14,7 @@ int main( int argc, char* args[]) {
 	if (!gameloop->Init()) {
 		return 1;
 	}
-	
+
 	while (gameloop->ProcessInput()){
 		gameloop->Update();
 		gameloop->Draw();
@@ -25,6 +26,7 @@ int main( int argc, char* args[]) {
 
 	delete gameloop;
 
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	return 0;

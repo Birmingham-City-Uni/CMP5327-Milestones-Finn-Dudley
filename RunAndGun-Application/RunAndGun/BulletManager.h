@@ -26,7 +26,7 @@ private:
 
 	const int pistolTime = 300;
 	const int rifleTime = 150;
-	const int shotgunTime = 1000;
+	const int shotgunTime = 800;
 
 	unsigned int lastFire = 0;
 

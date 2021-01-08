@@ -15,14 +15,6 @@ void GameObject::clean() {
 	SDL_DestroyTexture(this->gameObjectTexture);
 }
 
-bool GameObject::checkCollision(Circle& _obj1, Circle& _obj2) {
-	return true;
-}
-
-bool GameObject::checkCollision(Circle& _obj1, SDL_Rect& _obj2) {
-	return true;
-}
-
 void GameObject::shiftColliders() {
 	collider_Box.x = position.x;
 	collider_Box.y = position.y;
@@ -65,6 +57,16 @@ void GameObject::positionHealthbar(int _x,int  _y) {
 	healthbarBackground.y = healthBar.y;
 }
 
+bool GameObject::checkTileCollision(std::vector<Tile> _collideableTiles) {
+
+	SDL_Rect intersectResult;
+	for (auto& tile : _collideableTiles) {
+		if (SDL_IntersectRect(&collider_Box, &tile.getbox_Collider(), &intersectResult)) return true;
+	}
+
+	return false;
+}
+
 double GameObject::distanceSquared(int _obj1_x, int _obj1_y, int _obj2_x, int _obj2_y) {
 	return 0;
 }
@@ -77,12 +79,13 @@ Player::Player(Mouse* _mouse, BulletManager* _bulletManager) : mouse(_mouse), bu
 
 	this->maxHealth = 100;
 	this->health = this->maxHealth;
+	this->selectedWeapon = 1;
 
 	this->gameObjectTexture = nullptr;
 	this->gameObjectTexture2 = nullptr;
 	this->gameObjectTexture3 = nullptr;
 
-	this->position = { 1280 / 2, 720 / 2, 50, 75 };
+	this->position = { 1280 / 2 - 40, 720 / 2, 50, 75 };
 	this->oldPosX = nullptr; this->oldPosY = nullptr;
 	this->rotationPoint = { (int)(position.w / 2), (int)(position.h * 0.75)};
 	this->visable = true;
@@ -182,7 +185,7 @@ void Player::processInput(bool *keyDown, bool *buttonDown) {
 	}
 }
 
-void Player::update(){
+void Player::update(std::vector<Tile> _collideableTiles){
 
 	oldPosX = &position.x;
 	oldPosY = &position.y;
@@ -190,8 +193,7 @@ void Player::update(){
 	position.x += velocityX;
 	shiftColliders();
 
-
-	if (getCentreX() - collider_Circle.radius < 0 || getCentreX() + collider_Circle.radius > 1280) {
+	if (getCentreX() - collider_Circle.radius < 0 || checkTileCollision(_collideableTiles) || getCentreX() + collider_Circle.radius > 1280) {
 		position.x -= velocityX;
 		shiftColliders();
 	}
@@ -199,7 +201,7 @@ void Player::update(){
 	position.y += velocityY;
 	shiftColliders();
 
-	if (getCentreY() - collider_Circle.radius < 0 || getCentreY() + collider_Circle.radius > 720) {
+	if (getCentreY() - collider_Circle.radius < 0 || checkTileCollision(_collideableTiles) ||getCentreY() + collider_Circle.radius > 720) {
 		position.y -= velocityY;
 		shiftColliders();
 	}
@@ -243,6 +245,8 @@ void Player::fireSelectedWeapon() {
 			break;
 		}
 }
+
+
 #pragma endregion
 
 #pragma region Zombie Definitions
@@ -251,14 +255,14 @@ Zombie::Zombie() {
 	this->maxHealth = 100;
 	this->health = this->maxHealth;
 
-	this->movementSpeed = 1.5;
+	this->movementSpeed = 2;
 	this->rotationAngle = 0;
 
 	this->visable = true;
 	this->position = { 1280 / 2, 720 / 2, 50, 50 };
 	this->rotationPoint = { position.w/2, position.h/2 };
-	this->collider_Box.w = position.w;
-	this->collider_Box.h = position.h;
+	this->collider_Box.w = 50;
+	this->collider_Box.h = 50;
 
 	this->gameObjectTexture = nullptr;
 
@@ -279,10 +283,53 @@ bool Zombie::init(SDL_Renderer* _renderer) {
 	return true;
 }
 
-void Zombie::update(BulletManager* _bulletManager) {
+void Zombie::update(BulletManager* _bulletManager, Player* _player, std::vector<Tile> _collideableTiles) {
 	if (visable) {
+		oldPosX = &position.x;
+		oldPosY = &position.y;
 
-		// Movement Here
+
+		if (position.x < _player->getCentreX()) {
+			position.x += movementSpeed;
+			shiftColliders();
+
+			if (checkTileCollision(_collideableTiles)) {
+				position.x -= movementSpeed;
+				shiftColliders();
+			}
+		}
+		
+
+		if (position.x > _player->getCentreX()) {
+			position.x -= movementSpeed;
+			shiftColliders();
+
+			if (checkTileCollision(_collideableTiles)) {
+				position.x += movementSpeed;
+				shiftColliders();
+			}
+		}
+		
+
+		if (position.y < _player->getCentreY()) {
+			position.y += movementSpeed;
+			shiftColliders();
+
+			if (checkTileCollision(_collideableTiles)) {
+				position.y -= movementSpeed;
+				shiftColliders();
+			}
+		}
+		
+
+		if (position.y > _player->getCentreY()) {
+			position.y -= movementSpeed;
+
+			if (checkTileCollision(_collideableTiles)) {
+				position.y += movementSpeed;
+			}
+		}
+		
 
 		shiftColliders();
 		positionHealthbar(position.x - HEALTHBAR_WIDTH / 4, (position.y + position.h) + 10);
@@ -295,6 +342,10 @@ void Zombie::update(BulletManager* _bulletManager) {
 				damageObject(10);
 				bullet.isVisable = false;
 			}
+		}
+
+		if (SDL_IntersectRect(&collider_Box, &_player->collider_Box, &intersectResult)) {
+			attackPlayer(_player);
 		}
 	}
 }

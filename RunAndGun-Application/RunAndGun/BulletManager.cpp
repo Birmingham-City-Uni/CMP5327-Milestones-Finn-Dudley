@@ -25,18 +25,15 @@ bool BulletManager::init(SDL_Renderer* _renderer){
 
 void BulletManager::update() {
 	for (int i = 0; i < bullets.size(); i++) {
-		if (bullets[i].isVisable && bullets[i].distance < 1000) {
+		if (bullets[i].isVisable && bullets[i].distance < 1400) {
 
 			bullets[i].x += sin(bullets[i].rotation * PI / 180.0f) * movementSpeed;
 			bullets[i].y -= cos(bullets[i].rotation * PI / 180.0f) * movementSpeed;
 			bullets[i].distance += movementSpeed;
-			if (bullets[i].distance > 1000) {
-				bullets[i].isVisable = false;
-				std::cout << "Past Distance Threshold" << std::endl;
-			}
 		}
-		else if (!bullets[i].isVisable) {
-			
+		else if (!bullets[i].isVisable || bullets[i].distance >= 1400) {
+			std::cout << "Removing Bullet From Scene To Pool" << std::endl;
+
 			addBulletToPool(bullets[i]);
 			bullets.erase(bullets.begin() + i);
 		}
@@ -56,8 +53,15 @@ void BulletManager::draw(SDL_Renderer* _renderer) {
 void BulletManager::clean() {
 	SDL_DestroyTexture(this->pelletTexture);
 
-	if(!bullets.empty()) bullets.clear();
-	if(!bulletPool.empty()) bulletPool.clear();
+	if (!bullets.empty()) {
+		bullets.clear();
+		bullets.shrink_to_fit();
+	}
+
+	if (!bulletPool.empty()) {
+		bulletPool.clear();
+		bulletPool.shrink_to_fit();
+	}
 }
 
 // ----- //
@@ -111,6 +115,7 @@ void BulletManager::growBulletPool() {
 
 void BulletManager::addBulletToPool(Bullet _bullet) {
 	_bullet.distance = 0;
+	_bullet.isVisable = false;
 
 	bulletPool.push_back(_bullet);
 	std::cout << "Adding Bullet to Pool: " << bulletPool.size() << std::endl;

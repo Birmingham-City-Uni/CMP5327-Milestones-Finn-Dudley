@@ -2,17 +2,22 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <math.h>
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "Mouse.cpp"
+#include "Tile.h"
 #include "BulletManager.h"
+
 
 #define HEALTHBAR_WIDTH 75
 #define HEALTHBAR_HEIGHT 5
 
 #define MAX_MOVEMENT_SPEED 3
+
+#define ZOMBIE_ATTACK_SPEED 2000
 
 struct Circle {
 	int radius, x, y;
@@ -178,6 +183,7 @@ protected:
 	void drawHealthBar(SDL_Renderer* _renderer);
 	void positionHealthbar(int _x, int _y);
 
+	bool checkTileCollision(std::vector<Tile> _collideableTiles);
 	double distanceSquared(int _object1_x, int _object1_y, int _object2_x, int _object2_y);
 };
 #pragma endregion
@@ -201,8 +207,12 @@ public:
 	bool init(SDL_Renderer* _renderer) final override;
 	void processInput(bool * keyDown, bool* buttonDown);
 
-	void update();
+	void update(std::vector<Tile> _collideableTiles);
 	void draw(SDL_Renderer* _renderer) final override;
+
+	int getSelectedWeapon() {
+		return selectedWeapon;
+	}
 
 private:
 	void fireSelectedWeapon();
@@ -216,6 +226,8 @@ public:
 
 
 private:
+	bool attackCooldown;
+	unsigned int lastAttack;
 
 public:
 	Zombie();
@@ -223,10 +235,21 @@ public:
 
 	bool init(SDL_Renderer* _renderer) final override;
 
-	void update(BulletManager* _bulletManager);
+	void update(BulletManager* _bulletManager, Player* _player, std::vector<Tile> _collideablTiles);
 
 	void resetObjectHealth() {
 		this->health = this->maxHealth;
+	}
+
+	void attackPlayer(Player* _player) {
+		if (attackCooldown) {
+			attackCooldown = false;
+			_player->damageObject(10);
+			lastAttack = SDL_GetTicks() + ZOMBIE_ATTACK_SPEED;
+		}
+		else if (lastAttack < SDL_GetTicks()) {
+			attackCooldown = true;
+		}
 	}
 
 private:

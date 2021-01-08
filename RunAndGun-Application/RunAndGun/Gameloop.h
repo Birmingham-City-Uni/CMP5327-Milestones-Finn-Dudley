@@ -3,7 +3,9 @@
 #include <iostream>
 #include <SDL.h>
 
+#include "Menu.h"
 #include "GameManager.h"
+#include "UIManager.h"
 #include "Tilemap.h"
 #include "Mouse.cpp"
 #include "GameObjects.h"
@@ -20,7 +22,10 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
+	Menu* menu;
 	GameManager* gameManager;
+	UIManager* uiManager;
+
 
 	Tilemap* tilemap;
 	Mouse* mouse;
@@ -43,7 +48,6 @@ public:
 	void Draw();
 
 	bool UnloadAssets();
-
 };
 
 

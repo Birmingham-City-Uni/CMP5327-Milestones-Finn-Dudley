@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <deque>
 
@@ -34,9 +35,13 @@ public:
 		return currentWave;
 	}
 
+	void addScore(int _scoreToAdd) {
+		score += _scoreToAdd;
+	}
+
 	bool init(SDL_Renderer* _renderer);
 
-	void update(SDL_Renderer* _renderer, int _playerX, int _playerY);
+	void update(SDL_Renderer* _renderer, Player* _player, std::vector<Tile> _collideableTiles);
 	void draw(SDL_Renderer* _renderer);
 
 	void clean();
