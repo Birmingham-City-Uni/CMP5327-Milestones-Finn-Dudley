@@ -23,13 +23,26 @@ public:
 
 	}
 
+	/// <summary>
+	/// Gets the Tiles Box Collider.
+	/// </summary>
+	/// <returns>Returns the Tiles Box Collider</returns>
 	SDL_Rect getbox_Collider() {
 		return box_Collider;
 	}
 
+	/// <summary>
+	/// Gets the Tiles Texture Position
+	/// </summary>
+	/// <returns>Returns the Tiles Texture Position</returns>
 	SDL_Rect getTexturePos() {
 		return texturePosition;
 	}
+
+	/// <summary>
+	/// Gets the Tiles Position
+	/// </summary>
+	/// <returns>Returns the Textures Position</returns>
 	SDL_Rect getTilePos() {
 		return tilePosition;
 	}

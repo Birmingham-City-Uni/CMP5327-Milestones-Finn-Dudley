@@ -67,6 +67,10 @@ public:
 	/// </summary>
 	virtual void clean();
 
+	/// <summary>
+	/// Gets the GameObjects current rotation angle.
+	/// </summary>
+	/// <returns></returns>
 	int getAngle() {
 		return rotationAngle;
 	}
@@ -87,18 +91,34 @@ public:
 		return position.x;
 	}
 
+	/// <summary>
+	/// Gets the GameObjects Centre X rotation point.
+	/// </summary>
+	/// <returns>Returns the Centre X Position</returns>
 	int getCentreX() {
 		return position.x + rotationPoint.x;
 	}
 
+	/// <summary>
+	/// Gets the GameObjects Centre Y rotation point.
+	/// </summary>
+	/// <returns>Returns the Centre Y Position</returns>
 	int getCentreY() {
 		return position.y + rotationPoint.y;
 	}
 
+	/// <summary>
+	/// Gets the GameObjects Width.
+	/// </summary>
+	/// <returns>Returns the GameObjects Width.</returns>
 	int getWidth() {
 		return position.w;
 	}
 
+	/// <summary>
+	/// Gets the GameObjects Height.
+	/// </summary>
+	/// <returns>Returns the GameObjects Height.</returns>
 	int getHeight() {
 		return position.h;
 	}
@@ -158,32 +178,93 @@ public:
 		this->health += _value;
 		this->adjustHealthRect();
 	}
-
+	/// <summary>
+	/// Gets the GameObjects Box Collider
+	/// </summary>
+	/// <returns>Returns the GameObjects Box Collider.</returns>
 	SDL_Rect& getBoxCollider() {
 		return collider_Box;
 	}
 
+	/// <summary>
+	/// Gets the GameObjects Circel Collider
+	/// </summary>
+	/// <returns>Returns the GameObjects Circle Collider.</returns>
 	Circle& getCircleCollider() {
 		return collider_Circle;
 	}
 
+	/// <summary>
+	/// Moves the Colliders of the GameObject to match the X and Y position.
+	/// </summary>
 	void shiftColliders();
 
+	/// <summary>
+	/// Checks for Collisitions between two Circle Colliders.
+	/// </summary>
+	/// <param name="_obj1"> - The First Object Circle Collider.</param>
+	/// <param name="_obj2"> - The Second Object Circle Collider.</param>
+	/// <returns>Returns true if a collistion is occuring, false if no collision is occcuring.</returns>
 	bool checkCollision(Circle& _obj1, Circle& _obj2);
+
+	/// <summary>
+	/// Checks for Collistions between a Circle and Box Collider.
+	/// </summary>
+	/// <param name="_obj1" - The Circle Collider></param>
+	/// <param name="_obj2"> - The Box Collider</param>
+	/// <returns>Returns True if a collision is occuring, false if no collision is occuring.</returns>
 	bool checkCollision(Circle& _obj1, SDL_Rect& _obj2);
 
+	/// <summary>
+	/// Gives the rotation for the GameObject to look at the given x, y position.
+	/// </summary>
+	/// <param name="_x"> - The X position to rotate towards.</param>
+	/// <param name="_y"> - The Y postion to rotatte towards.</param>
 	void rotateTowardsPoint(int _x, int _y);
 
+	/// <summary>
+	/// Adjust the Rects of the GameObjects Healthbar depend on the current health.
+	/// </summary>
 	void adjustHealthRect();
 
 protected:
 
+	/// <summary>
+	/// Gets the required texture.
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
+	/// <param name="_filename"> - The textures Directory.</param>
+	/// <returns>Returns a useable texture.</returns>
 	SDL_Texture* getTexture(SDL_Renderer* _renderer, std::string _filename);
 	
+	/// <summary>
+	/// Draws the GameObjects Healthbar.
+	/// </summary>
+	/// <param name="_renderer">- The Games Renderer</param>
 	void drawHealthBar(SDL_Renderer* _renderer);
+
+	/// <summary>
+	/// Positions the GameObjects healthbar accoring to the given x, y position
+	/// </summary>
+	/// <param name="_x"> - the desired x position.</param>
+	/// <param name="_y"> - the desired y position.</param>
 	void positionHealthbar(int _x, int _y);
 
+	/// <summary>
+	/// Checks the GameObjects Collision with the Games Tiles.
+	/// </summary>
+	/// <param name="_collideableTiles"> - The Vector of the collideable Tiles.</param>
+	/// <returns></returns>
 	bool checkTileCollision(std::vector<Tile> _collideableTiles);
+
+	/// <summary>
+	/// The Distance Squared between two x,y positions.
+	/// </summary>
+	/// <param name="_object1_x"> - The First x Position</param>
+	/// <param name="_object1_y"> - The First Y Position</param>
+	/// <param name="_object2_x"> - The Second X Position</param>
+	/// <param name="_object2_y"> - The Second Y Position</param>
+	/// <returns></returns>
 	double distanceSquared(int _object1_x, int _object1_y, int _object2_x, int _object2_y);
 };
 #pragma endregion
@@ -204,17 +285,44 @@ public:
 	Player(Mouse* mouse, BulletManager* _bulletManager);
 	~Player();
 
+	/// <summary>
+	/// The Players Init Function
+	/// </summary>
+	/// <param name="_renderer">- The Games Renderer</param>
+	/// <returns>Returns True if all initializes correctly, false if an error occurs.</returns>
 	bool init(SDL_Renderer* _renderer) final override;
+
+	/// <summary>
+	/// Processes the Players Input.
+	/// </summary>
+	/// <param name="keyDown"> - the Games array tracking which key is pressed.</param>
+	/// <param name="buttonDown"> - The Games Array Tracking which mousebutton is pressed.</param>
 	void processInput(bool * keyDown, bool* buttonDown);
 
+	/// <summary>
+	/// The Players Update Function
+	/// </summary>
+	/// <param name="_collideableTiles"> - The Vector of the tilemaps collideable tiles.</param>
 	void update(std::vector<Tile> _collideableTiles);
+
+	/// <summary>
+	/// The Players Draw Function
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
 	void draw(SDL_Renderer* _renderer) final override;
 
+	/// <summary>
+	/// Gets the value of the currently selected weapon.
+	/// </summary>
+	/// <returns>Returns the selected weapon int value.</returns>
 	int getSelectedWeapon() {
 		return selectedWeapon;
 	}
 
 private:
+	/// <summary>
+	/// Fires the Currently Selected Weapon.
+	/// </summary>
 	void fireSelectedWeapon();
 };
 #pragma endregion
@@ -233,14 +341,32 @@ public:
 	Zombie();
 	~Zombie();
 
+	/// <summary>
+	/// The Zombies Init Function
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
+	/// <returns>Returns True if all inisitalized properly, false if an error occurs.</returns>
 	bool init(SDL_Renderer* _renderer) final override;
 
+	/// <summary>
+	/// Updates the Zombie
+	/// </summary>
+	/// <param name="_bulletManager"> - The BulletsManagers Class</param>
+	/// <param name="_player"> - The Players Class</param>
+	/// <param name="_collideablTiles"> - A Vector of collideable tiles.</param>
 	void update(BulletManager* _bulletManager, Player* _player, std::vector<Tile> _collideablTiles);
 
+	/// <summary>
+	/// Resets the Objects Health, to its max health.
+	/// </summary>
 	void resetObjectHealth() {
 		this->health = this->maxHealth;
 	}
 
+	/// <summary>
+	/// Attacks the Player if in Range.
+	/// </summary>
+	/// <param name="_player"> - The Players Class</param>
 	void attackPlayer(Player* _player) {
 		if (attackCooldown) {
 			attackCooldown = false;

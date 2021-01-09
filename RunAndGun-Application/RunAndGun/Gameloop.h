@@ -39,14 +39,32 @@ public:
 	Gameloop();
 	~Gameloop();
 
+	/// <summary>
+	/// The Games Main Init Function
+	/// </summary>
+	/// <returns>Returns true if all Initialized correctly.</returns>
 	bool Init();
 
+	/// <summary>
+	/// Processes the SDL Input Queue.
+	/// </summary>
+	/// <returns>Returns false if the gameloop is to be cancelled</returns>
 	bool ProcessInput();
 
+	/// <summary>
+	/// The Games Main Update Function
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// The Games Main Draw Function
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// Unloads assets before closing the game.
+	/// </summary>
+	/// <returns>Returns false if an error occurs.</returns>
 	bool UnloadAssets();
 };
 

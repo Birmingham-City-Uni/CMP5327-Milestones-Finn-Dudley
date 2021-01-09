@@ -1,11 +1,23 @@
-﻿  GameCharacters.cpp
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameCharacters.cpp(29,2): warning C4150: deletion of pointer to incomplete type 'SDL_Renderer'; no destructor called
-C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\SDL2-2.0.12\include\SDL_render.h(132): message : see declaration of 'SDL_Renderer'
+﻿  BulletManager.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(30,74): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\BulletManager.cpp(31,74): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+  GameManager.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.cpp(23,37): warning C4018: '>': signed/unsigned mismatch
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameManager.cpp(50,20): warning C4018: '<': signed/unsigned mismatch
+  Mouse.cpp
+  GameObjects.cpp
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(27,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\GameObjects.cpp(50,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Gameloop.cpp
   main.cpp
 C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\RunAndGun\main.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  TileMap.cpp
+  UIManager.cpp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 28 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  663 of 664 functions (99.8%) were compiled, the rest were copied from previous compilation.
+    641 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   RunAndGun-Application.vcxproj -> C:\Users\FINN\Documents\GitHub\milestones-F-Dudley\RunAndGun-Application\Release\RunAndGun-Application.exe

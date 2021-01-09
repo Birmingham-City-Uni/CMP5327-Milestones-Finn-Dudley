@@ -39,6 +39,11 @@ public:
 
 	}
 
+	/// <summary>
+	/// Menu's Init Function
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
+	/// <param name="_uiManager"> - The Games UIManager</param>
 	void init(SDL_Renderer* _renderer, UIManager* _uiManager) {
 		//Colors
 		titleColor = { 255, 0, 0, 255 };
@@ -61,6 +66,10 @@ public:
 		heading3Texture = _uiManager->createTextTexture(_renderer, "3 - Winter Rampage", headingsColor);
 	}
 
+	/// <summary>
+	/// Processes any necassary input needed for the main menu.
+	/// </summary>
+	/// <returns>Returns false if the gameloop is to be broke.</returns>
 	bool processInput() {
 		SDL_Event e;
 
@@ -94,6 +103,10 @@ public:
 		return true;
 	}
 
+	/// <summary>
+	/// Draws the Main Menu
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
 	void draw(SDL_Renderer* _renderer) {
 		SDL_RenderClear(_renderer);
 		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
@@ -121,6 +134,9 @@ public:
 		SDL_RenderPresent(_renderer);
 	}
 
+	/// <summary>
+	/// Cleans and Assets from the Menu
+	/// </summary>
 	void clean() {
 		SDL_DestroyTexture(titleTexture);
 		SDL_DestroyTexture(helperTexture1);

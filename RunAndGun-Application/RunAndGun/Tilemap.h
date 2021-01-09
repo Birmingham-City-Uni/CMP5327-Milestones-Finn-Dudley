@@ -31,12 +31,28 @@ public:
 	Tilemap(int _selectedLevel);
 	~Tilemap();
 
+	/// <summary>
+	/// The TileMaps Init Function
+	/// </summary>
+	/// <param name="_renderer"> - the Games Renderer</param>
+	/// <returns>Returns True if all assets are initialized correctly, false if an error occurs</returns>
 	bool init(SDL_Renderer* _renderer);
 
+	/// <summary>
+	/// Draws the TileMap's Tiles.
+	/// </summary>
+	/// <param name="_renderer"> - The Games Renderer</param>
 	void draw(SDL_Renderer* _renderer);
 
+	/// <summary>
+	/// Cleans the TileMap's required assets.
+	/// </summary>
 	void clean();
 
 private:
+	/// <summary>
+	/// Loads the Selected Level from the given txt file.
+	/// </summary>
+	/// <returns>Returns true if the level loads correctly, false if an error occurs</returns>
 	bool loadLevel();
 };
